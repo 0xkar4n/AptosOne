@@ -69,7 +69,7 @@ const StakingCard = ({ icon, title, description }: StakingCardProps) => {
               </div>
               <div className="relative overflow-hidden mt-2">
                 <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} className="rounded-lg" />
-                  <Button className="w-full px-4 py-2 bg-black/40 hover:bg-blue-500 text-white rounded-lg">
+                  <Button className="w-full px-4 py-2 bg-black hover:bg-black/40 text-white rounded-lg">
                     Stake
                   </Button>
               </div>
@@ -92,7 +92,7 @@ const StakingCard = ({ icon, title, description }: StakingCardProps) => {
               </div>
               <div className="relative overflow-hidden mt-2">
                 <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} className="rounded-lg" />
-                  <Button className="w-full px-4 py-2 bg-black/40 hover:bg-blue-500 text-white rounded-lg">
+                  <Button className="w-full px-4 py-2 bg-black hover:bg-black/40 text-white rounded-lg">
                     Unstake
                   </Button>
               </div>

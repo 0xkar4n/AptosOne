@@ -59,9 +59,17 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} className="rounded-lg" />
           <div className="flex flex-col justify-center gap-y-4 px-5 py-4">
             <SidebarLink
-              link={{ label: "Stake", href: "/stake", icon: <IconWallet /> }}
+              link={{ label: "Stake", href: "/", icon: <IconWallet /> }}
             />
             <div className="border-t border-neutral-700 my-2"></div>
+
+            <SidebarLink
+              link={{ label: "Top Pools", href: "/top-pools", icon: <IconWallet /> }}
+            />
+            <div className="border-t border-neutral-700 my-2"></div>
+            
+            
+            
             <SidebarLink
               link={{ label: "Swapping", href: "/swapping", icon: <IconArrowsExchange /> }}
             />

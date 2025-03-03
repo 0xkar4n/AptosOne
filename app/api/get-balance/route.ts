@@ -8,8 +8,10 @@ export const GET = async(req:Request) => {
         const APTbalance = await agent.aptos.getAccountAPTAmount({
           accountAddress: walletAddress,
         });
-        console.log("Fetched APT balance:", APTbalance);
-        return Response.json({APTbalance});
+
+        const finalAPTbalance=APTbalance/1e9;
+        console.log("Fetched APT balance:", finalAPTbalance);
+        return Response.json({finalAPTbalance});
       } catch (error) {
         console.error("Error fetching APT balance:", error);
         return Response.json({error});
