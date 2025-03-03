@@ -11,7 +11,11 @@ export const useAptBalance = () => {
       try {
         setLoading(true);
         const response = await axios.get('/api/get-balance');
-        setBalance(response.data.APTbalance);
+        const rawBalance = response.data.finalAPTbalance;
+        console.log("raw balance:", rawBalance, typeof rawBalance);
+        // Convert rawBalance to string, trim, and then parse it as a float.
+        const cleaned = rawBalance ;
+        setBalance(parseFloat(cleaned));
         setError(null);
       } catch (err) {
         setError('Failed to fetch APT balance');

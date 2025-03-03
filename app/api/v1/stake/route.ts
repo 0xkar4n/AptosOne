@@ -1,37 +1,48 @@
 import { aptosAgent } from "@/utils/aptosAgent";
 
-export const POST = async(req:Request) => {
-    try {
-        const { protocol, value } = await req.json();
-
-        console.log(`Protocol value = ${protocol} and value provided = ${value}`)
-
-        if (!protocol || typeof value !== 'number') {
-          return Response.json({ error: 'Missing or invalid protocol/value' });
-        }
-        const {agent}= await aptosAgent()
-
-        let result;
-        const protocolLower = protocol.toLowerCase();
-        if (protocolLower === 'thala') {
-            console.log("Thala protocol")
-            result = await agent.stakeTokensWithThala(value);
-        } else if (protocolLower === 'amnis') {
-            console.log("Amnis protocol")
-            const walletAddress= agent.account.getAddress();
-            result = await agent.stakeTokensWithAmnis(walletAddress,value);
-        } else if (protocolLower === 'echo') {
-            console.log("Echo protocol")
-            result = await agent.stakeTokenWithEcho(value);
-        } else {
-            return Response.json({ error: 'Invalid protocol provided' });
-        }
-
-        return Response.json({result})
-
-    } catch (error) {
-        console.error("Error in POST handler:", error);
-        return Response.json({error})
+export const POST = async (req: Request) => {
+  try {
+    const { protocol, value } = await req.json();
+    // Convert value to number
+    const rawValue = Number(value);
+    if (isNaN(rawValue) || rawValue <= 0) {
+      return Response.json({ error: 'Invalid value provided' }, { status: 400 });
     }
- 
-}
+    // Convert APT amount (human-readable) to smallest unit (assuming 8 decimals)
+    const amountInInteger = Math.floor(rawValue * 10 ** 8);
+
+    console.log(`Protocol value = ${protocol} and value provided = ${amountInInteger}`);
+
+    if (!protocol || typeof value !== 'number') {
+      return Response.json({ error: 'Missing or invalid protocol/value' }, { status: 400 });
+    }
+    const { agent } = await aptosAgent();
+
+    let result;
+    const protocolLower = protocol.toLowerCase();
+    if (protocolLower === 'thala') {
+      console.log("Thala protocol");
+      result = await agent.stakeTokensWithThala(amountInInteger);
+    } else if (protocolLower === 'amnis') {
+      console.log("Amnis protocol");
+      const walletAddress = agent.account.getAddress();
+      result = await agent.stakeTokensWithAmnis(walletAddress, amountInInteger);
+    } else if (protocolLower === 'echo') {
+      console.log("Echo protocol");
+      result = await agent.stakeTokenWithEcho(amountInInteger);
+    } else {
+      return Response.json({ error: 'Invalid protocol provided' }, { status: 400 });
+    }
+
+    return Response.json({ result });
+  } catch (error: any) {
+    console.error("Error in POST handler:", error);
+    return Response.json(
+      {
+        error: error.message,
+        code: error.error_code || error.vm_error_code || null,
+      },
+      { status: 500 }
+    );
+  }
+};

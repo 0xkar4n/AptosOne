@@ -40,7 +40,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ icon, title, apy, extraApy, type })
           {type === "Lending" ? (
             <p className="text-sm text-gray-300">
               Deposit APY: {apy}
-              {extraApy && <span> (Extra: {extraApy})</span>}
+              {extraApy && <span> (Extra: {Number(extraApy).toFixed(2)})</span>}
             </p>
           ) : (
             <p className="text-sm text-gray-300">

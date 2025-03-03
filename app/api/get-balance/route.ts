@@ -9,7 +9,7 @@ export const GET = async(req:Request) => {
           accountAddress: walletAddress,
         });
 
-        const finalAPTbalance=APTbalance/1e9;
+        const finalAPTbalance=APTbalance/1e8;
         console.log("Fetched APT balance:", finalAPTbalance);
         return Response.json({finalAPTbalance});
       } catch (error) {

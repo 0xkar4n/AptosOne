@@ -5,7 +5,6 @@ import { Aptos, AptosConfig, Ed25519PrivateKey, Network, PrivateKey, PrivateKeyV
 export async function aptosAgent() {
   const aptosConfig = new AptosConfig({ network: Network.MAINNET });
   const aptos = new Aptos(aptosConfig);
-  console.log(Aptos)
 
   const privateKeyStr = process.env.APTOS_PRIVATE_KEY;
   if (!privateKeyStr) {

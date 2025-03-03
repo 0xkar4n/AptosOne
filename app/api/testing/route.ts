@@ -7,18 +7,19 @@ import {
     PrivateKey,
     PrivateKeyVariants,
   } from "@aptos-labs/ts-sdk";
-  import { ChatAnthropic } from "@langchain/anthropic";
+  import { ChatOpenAI } from '@langchain/openai';
   import { HumanMessage } from "@langchain/core/messages";
   import { MemorySaver } from "@langchain/langgraph";
   import { createReactAgent } from "@langchain/langgraph/prebuilt";
   import { AgentRuntime, LocalSigner, createAptosTools } from "move-agent-kit";
-  import { TopApyTool } from "@/tools/top-apy-pool";
+  
   import { NextResponse } from "next/server";
 import { aptosAgent } from "@/utils/aptosAgent";
   
-const llm = new ChatAnthropic({
-    temperature: 0.7,
-    model: "claude-3-5-sonnet-20241022",
+const llm = new ChatOpenAI({
+  temperature: 0.7,
+  model: 'gpt-4o-mini',
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 
@@ -31,10 +32,12 @@ const llm = new ChatAnthropic({
       
   
       // Create the tools object by merging default tools with your custom TopApyTool
-      const tools = [
-        ...createAptosTools(agentRuntime),
-        new TopApyTool(agentRuntime),
-      ];
+     // const tools = [
+      //  ...createAptosTools(agentRuntime),
+    //   new TopApyTool(agentRuntime),
+      //];
+
+      const tools = createAptosTools(agentRuntime);
 
   
       // Initialize the language model and memory saver
@@ -59,7 +62,7 @@ const llm = new ChatAnthropic({
       // Stream a command to fetch the top lending and borrowing pools
       const stream = await agent.stream(
         {
-          messages: [new HumanMessage("Show me the top lending and borrowing pools")],
+          messages: [new HumanMessage("show my wallet balance")],
         },
         config
       );
