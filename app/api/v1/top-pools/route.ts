@@ -11,21 +11,26 @@ export async function GET() {
     const pools = allPoolDetails.data;
 
 
-    
+
 
   
     // Process the data for lending pools (highest deposit APY)
     const topLendPools = pools
-      .slice() 
-      .sort((a:{depositApy: number}, b :{depositApy: number}) => b.depositApy - a.depositApy)
-      .slice(0, 3)
-      .map((pool: any) => ({
-        name: pool.asset.assetName,
-        icon: pool.asset.icon,
-        tokenAddress: pool.asset.type,
-        depositApy: pool.depositApy,
-        extraDepositApy: pool.extraAPY ? pool.extraAPY.depositAPY : null,
-      }));
+  .slice()
+  .sort((a: any, b: any) => {
+    const aTotalApy = a.depositApy + (a.extraAPY ? a.extraAPY.depositAPY : 0);
+    const bTotalApy = b.depositApy + (b.extraAPY ? b.extraAPY.depositAPY : 0);
+    return bTotalApy - aTotalApy;
+  })
+  .slice(0, 3)
+  .map((pool: any) => ({
+    name: pool.asset.assetName,
+    icon: pool.asset.icon,
+    tokenAddress: pool.asset.type,
+    depositApy: pool.depositApy,
+    extraDepositApy: pool.extraAPY ? pool.extraAPY.depositAPY : null,
+  }));
+
 
     // Process the data for borrowing pools (lowest borrow APY)
     const topBorrowPools = pools
