@@ -9,6 +9,8 @@ interface Pool {
   tokenAddress: string;
   depositApy?: number;
   extraDepositApy?: number | null;
+  stakingAPY?: number | null;
+  totalApy?: number;
   borrowApy?: number;
   icon?: string;
 }
@@ -51,9 +53,11 @@ export default function TopPoolsPage() {
               key={index}
               icon={pool.icon || "/placeholder.png"}
               title={pool.name}
-              apy={pool.depositApy || 0}
-              extraApy={pool.extraDepositApy || null}
               type="Lending"
+              depositApy={pool.depositApy || 0}
+              extraApy={pool.extraDepositApy || null}
+              stakingApy={pool.stakingAPY || null}
+              totalApy={pool.totalApy || 0}
             />
           ))}
         </div>
@@ -66,8 +70,8 @@ export default function TopPoolsPage() {
               key={index}
               icon={pool.icon || "/placeholder.png"}
               title={pool.name}
-              apy={pool.borrowApy || 0}
               type="Borrowing"
+              borrowApy={pool.borrowApy || 0}
             />
           ))}
         </div>

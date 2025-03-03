@@ -96,7 +96,7 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         {/* Logo */}
-        <SparklesText className="text-3xl flex justify-center  " text="MOVEN" />
+        <SparklesText className="text-3xl flex justify-center  " text="AptosOne" />
         <br  className="h-2 w-1/2 bg-white"/>
 
         {/* Navigation */}

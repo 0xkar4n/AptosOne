@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Moven",
+  title: "AptosOne",
   description: "One place stop for all your onchain transaction on Aptos chain",
 };
 
