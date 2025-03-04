@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
+import { toast } from "sonner";
 
 interface StakingCardProps {
   icon: React.ReactNode;
@@ -17,29 +18,39 @@ interface StakingCardProps {
 }
 
 const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingCardProps) => {
-  const [activeTab, setActiveTab] = useState("Stake");
+  const [activeTab, setActiveTab] = useState("stake");
   const [stakeAmount, setStakeAmount] = useState("");
-  const [result, setResult] = useState("");
-  const [error, setError] = useState("");
-  // New state for tracking the API call status
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleStake = async () => {
     try {
       const amount = Number(stakeAmount);
       if (isNaN(amount) || amount <= 0) {
-        console.error("Please enter a valid stake amount");
+        toast.error("Please enter a valid stake amount");
         return;
       }
       setIsSubmitting(true);
       const protocol = title;
       const payload = { protocol, value: amount };
+      
+      // Show loading toast
+      toast.loading("Processing your stake request...");
+      
       const response = await axios.post("/api/v1/stake", payload);
-      setResult(JSON.stringify(response.data.result));
-      setError("");
+      
+      // Dismiss all toasts before showing success
+      toast.dismiss();
+      toast.success("Stake successful!", {
+        description: `Successfully staked ${amount} APT with ${protocol}`,
+      });
+      
+      setStakeAmount(""); // Clear input after successful stake
     } catch (err: any) {
-      setError(err.response?.data?.error || err.message);
-      setResult("");
+      // Dismiss all toasts before showing error
+      toast.dismiss();
+      toast.error("Stake failed", {
+        description: err.response?.data?.error || err.message || "An error occurred while staking",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -65,15 +76,13 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
                 {title}
               </h3>
             </div>
-            <Tabs defaultValue="stake" className="mt-4">
-              <TabsList>
-                <TabsTrigger value="stake" onClick={() => setActiveTab("Stake")}>
-                  Stake
-                </TabsTrigger>
-                <TabsTrigger value="unstake" onClick={() => setActiveTab("Unstake")}>
-                  Unstake
-                </TabsTrigger>
+            
+            <Tabs defaultValue="stake" value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="stake">Stake</TabsTrigger>
+                <TabsTrigger value="unstake">Unstake</TabsTrigger>
               </TabsList>
+              
               <TabsContent value="stake" className="mt-6">
                 <Label htmlFor="amount" className="block mb-2 text-sm font-medium text-gray-300">
                   Amount of APT to Stake
@@ -99,14 +108,13 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
                   <Button
                     onClick={handleStake}
                     disabled={isSubmitting}
-                    className="w-full px-4 py-2 bg-black hover:bg-black/40 text-white rounded-lg "
+                    className="w-full px-4 py-2 bg-black hover:bg-black/40 text-white rounded-lg"
                   >
                     {isSubmitting ? "Processing..." : "Tell agent to deposit"}
                   </Button>
                 </div>
-                {result && <div className="mt-2 text-green-500">{result}</div>}
-                {error && <div className="mt-2 text-red-500">{error}</div>}
               </TabsContent>
+              
               <TabsContent value="unstake" className="mt-6">
                 <Label htmlFor="unstake-amount" className="block mb-2 text-sm font-medium text-gray-300">
                   Amount of APT to Unstake
