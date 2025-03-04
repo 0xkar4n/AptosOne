@@ -91,7 +91,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
           />
 
           <Button className="w-full bg-black hover:bg-black/40 text-white rounded-lg">
-             {type === "Lending" ? "Deposit" : "Borrow"}
+             {type === "Lending" ? "Tell agent to Deposit" : "Tell agenet to Borrow"}
           </Button>
         </div>
       </div>

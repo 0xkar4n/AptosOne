@@ -68,9 +68,9 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
 
 
   const links = [
-    { label: "Stake", href: "/", icon: <IconWallet className="w-5 h-5" /> },
+    { label: "Stake", href: "/stake", icon: <IconWallet className="w-5 h-5" /> },
     { label: "Top Pools", href: "/top-pools", icon: <IconDroplet className="w-5 h-5" />  },
-    { label: "Swapping", href: "/swapping", icon: <IconArrowsExchange className="w-5 h-5" /> },
+    { label: "AI Strategy", href: "/ai-strategy", icon: <IconArrowsExchange className="w-5 h-5" /> },
   ]
 
   return (

@@ -19,6 +19,7 @@ interface StakingCardProps {
 const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingCardProps) => {
   const [activeTab, setActiveTab] = useState("Stake");
   const [stakeAmount, setStakeAmount] = useState("");
+  const [unstakeAmount, setUnstakeAmount] = useState("");
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
   // New state for tracking the API call status
@@ -35,6 +36,26 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       const protocol = title;
       const payload = { protocol, value: amount };
       const response = await axios.post("/api/v1/stake", payload);
+      setResult(JSON.stringify(response.data.result));
+      setError("");
+    } catch (err: any) {
+      setError(err.response?.data?.error || err.message);
+      setResult("");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  const handleUnstake = async () => {
+    try {
+      const amount = Number(unstakeAmount);
+      if (isNaN(amount) || amount <= 0) {
+        console.error("Please enter a valid stake amount");
+        return;
+      }
+      setIsSubmitting(true);
+      const protocol = title;
+      const payload = { protocol, value: amount };
+      const response = await axios.post("/api/v1/unstake", payload);
       setResult(JSON.stringify(response.data.result));
       setError("");
     } catch (err: any) {
@@ -101,7 +122,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
                     disabled={isSubmitting}
                     className="w-full px-4 py-2 bg-black hover:bg-black/40 text-white rounded-lg "
                   >
-                    {isSubmitting ? "Processing..." : "Tell agent to deposit"}
+                    {isSubmitting ? "Processing..." : "Tell Agent to Stake"}
                   </Button>
                 </div>
                 {result && <div className="mt-2 text-green-500">{result}</div>}
@@ -116,6 +137,8 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
                     id="unstake-amount"
                     type="text"
                     placeholder="Enter amount"
+                    value={unstakeAmount}
+                    onChange={(e) => setUnstakeAmount(e.target.value)}
                     className="w-full p-2 border rounded-lg bg-gray-800 text-white"
                   />
                 </div>
@@ -124,8 +147,11 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
                     shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
                     className="rounded-lg"
                   />
-                  <Button className="w-full px-4 py-2 bg-black hover:bg-black/40 text-white rounded-lg">
-                    Unstake
+                  <Button 
+                  onClick={handleUnstake}
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-2 bg-black hover:bg-black/40 text-white rounded-lg">
+                    {isSubmitting ? "Processing..." : "Tell Agent to unstake"}
                   </Button>
                 </div>
               </TabsContent>
