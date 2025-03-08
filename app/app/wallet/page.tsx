@@ -1,7 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import axios from "axios";
+import { toast } from "sonner";
+import { fetchAptosOneWallet } from "@/utils/fetchAptosOneWallet";
+import {
+  AccountAddress
+} from "@aptos-labs/ts-sdk";
 
 // Helper function to shorten addresses
 function shortAddress(addr: string): string {
@@ -9,9 +15,6 @@ function shortAddress(addr: string): string {
   if (addr.startsWith("0x") && addr.length > 10) {
     // Example: 0x21..ad92
     return addr.slice(0, 6) + ".." + addr.slice(-4);
-  }
-  if (addr.length > 8) {
-    return addr.slice(0, 4) + ".." + addr.slice(-4);
   }
   return addr;
 }
@@ -25,17 +28,42 @@ const WalletConnectDemo = () => {
     wallet,
   } = useWallet();
 
-  const [createdWallet, setCreatedWallet] = useState<{
-    walletAddress: string;
-    encryptedPrivateKey: string;
-  } | null>(null);
+  const [createdWallet, setCreatedWallet] = useState< string| null>(null);
+
+
+  useEffect(() => {
+    const checkCreatedWallet = async () => {
+      const userWalletAddress=account?.address.toString()
+      if(userWalletAddress){
+        try {
+          const response = await fetchAptosOneWallet(userWalletAddress.toString())
+          console.log("incise use effect func",response)
+          
+          if (response.success) {
+            console.log("Wallet is already created")
+            console.log(response)
+            setCreatedWallet(response.data.aptosOneWalletAddress);
+          } else {
+            setCreatedWallet(null);
+          }
+        } catch (error) {
+          console.error("Error fetching created wallet:", error);
+          setCreatedWallet(null);
+        }
+      
+    };
+  }
+    checkCreatedWallet();
+  }, [account?.address]);
 
   // Connect with a specific wallet name (e.g., "Petra")
   const onConnect = async (walletName: string) => {
     console.log("Attempting to connect with:", walletName);
     try {
       await connect(walletName);
+      
       console.log("Connected to wallet:", account);
+      toast.success("Wallet Connected")
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
     }
@@ -46,6 +74,7 @@ const WalletConnectDemo = () => {
     try {
       await disconnect();
       console.log("Disconnected from wallet");
+      toast.success("Wallet Disconnected")
     } catch (error) {
       console.error("Failed to disconnect from wallet:", error);
     }
@@ -54,11 +83,17 @@ const WalletConnectDemo = () => {
   // Create a new Aptos wallet via your backend API
   const handleCreateWallet = async () => {
     try {
-      const response = await fetch("/api/wallet", { method: "POST" });
-      const data = await response.json();
-      if (response.ok) {
-        setCreatedWallet(data.wallet);
+      const userWalletAddress = account?.address.toString();
+      toast.loading("Creating you AptosOne Wallet....");
+      const response = await axios.post("/api/wallet", { userWalletAddress });
+      const data = await response.data;
+      if (response.status === 200) {
+        setCreatedWallet(data.wallet.aptosOneWalletAddress);
         console.log("New wallet created:", data.wallet);
+        toast.dismiss();
+        toast.success("AptosOne Created successful!", {
+        description: `Here is you aptosOne Wallet Address at Wallet Tab`,
+      })
       } else {
         alert("Error creating wallet: " + data.error);
       }
@@ -91,12 +126,6 @@ const WalletConnectDemo = () => {
                 </span>
               </div>
               <div>
-                <span className="font-medium text-gray-300">Public Key: </span>
-                <span className="text-gray-200">
-                  {account?.publicKey.toString().slice(0, 8)}...
-                </span>
-              </div>
-              <div>
                 <span className="font-medium text-gray-300">Wallet: </span>
                 <span className="text-gray-200">{wallet?.name}</span>
               </div>
@@ -110,34 +139,34 @@ const WalletConnectDemo = () => {
               >
                 Disconnect
               </button>
-              <button
-                onClick={handleCreateWallet}
-                className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded"
-              >
-                Create New Wallet
-              </button>
             </div>
 
-            {/* Newly Created Wallet */}
-            {createdWallet && (
+            {/* Conditional Section: If AptosOne wallet is created or not */}
+            {createdWallet ? (
+              // Display the created AptosOne wallet details
               <div className="bg-neutral-700 p-4 rounded-lg space-y-2 mt-4">
-                <div className="text-sm text-gray-400">New Wallet Details</div>
+                <div className="text-sm text-gray-400">Your AptosOne Wallet</div>
                 <div>
                   <span className="font-medium text-gray-300">
                     Wallet Address:
                   </span>{" "}
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200 font-bold">
-                    {shortAddress(createdWallet.walletAddress)}
+                    {shortAddress(createdWallet)}
                   </span>
                 </div>
-                <div>
-                  <span className="font-medium text-gray-300">
-                    Encrypted Private Key:
-                  </span>{" "}
-                  <span className="text-gray-200">
-                    {createdWallet.encryptedPrivateKey}
-                  </span>
-                </div>
+              </div>
+            ) : (
+              // Prompt user to create a wallet if not created
+              <div className="bg-neutral-700 p-4 rounded-lg space-y-2 mt-4">
+                <p className="text-gray-300">
+                  You haven't created an AptosOne Wallet yet.
+                </p>
+                <button
+                  onClick={handleCreateWallet}
+                  className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded"
+                >
+                  Create AptosOne Wallet
+                </button>
               </div>
             )}
           </div>

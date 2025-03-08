@@ -12,7 +12,6 @@ interface WalletProviderProps {
 const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   return (
     <AptosWalletAdapterProvider
-      // Use the wallet names you wish to support; here we’re opting in to Petra
       optInWallets={["Petra"]}
       autoConnect={false}
       dappConfig={{ network: Network.MAINNET }}

@@ -2,7 +2,7 @@ import { aptosAgent } from "@/utils/aptosAgent";
 
 export const POST = async (req: Request) => {
   try {
-    const { protocol, value } = await req.json();
+    const { protocol, value, userWalletAddress } = await req.json();
     // Convert value to number
     const rawValue = Number(value);
     if (isNaN(rawValue) || rawValue <= 0) {
@@ -16,7 +16,7 @@ export const POST = async (req: Request) => {
     if (!protocol || typeof value !== 'number') {
       return Response.json({ error: 'Missing or invalid protocol/value' }, { status: 400 });
     }
-    const { agent } = await aptosAgent();
+    const { agent } = await aptosAgent(userWalletAddress);
 
     let result;
     const protocolLower = protocol.toLowerCase();
