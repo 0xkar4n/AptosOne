@@ -3,8 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Sparkles, Zap, Code2, Cpu, Boxes } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function Home() {
+
+  const router = useRouter();
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-background/95 relative overflow-hidden">
       {/* Gradient Orbs */}
@@ -38,11 +42,15 @@ export default function Home() {
           </p>
 
           <div className="flex justify-center gap-4">
-            <Button size="lg" className="group">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => router.push('/app/stake')}
+              className="px-8 py-4 bg-gradient-to-r from-purple-900/80 to-amber-900/80 backdrop-blur-sm text-white rounded-full text-lg font-medium tracking-wide transition-all duration-300 hover:from-purple-800 hover:to-amber-800 hover:shadow-lg hover:shadow-purple-900/20 relative z-10 group-hover:shadow-xl group-hover:shadow-purple-900/30"
+            >
               Get Started
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button size="lg" variant="outline">
+            </motion.button>
+            <Button  size="lg" variant="outline">
               View Documentation
             </Button>
           </div>
