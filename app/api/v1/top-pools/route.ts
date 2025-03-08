@@ -18,8 +18,16 @@ export async function GET() {
     const topLendPools = pools
   .slice()
   .sort((a: any, b: any) => {
-    const aTotalApy = a.depositApy + (a.extraAPY ? a.extraAPY.depositAPY : 0);
-    const bTotalApy = b.depositApy + (b.extraAPY ? b.extraAPY.depositAPY : 0);
+    const aDeposit = Number(a.depositApy);
+    const aExtra = a.extraAPY ? Number(a.extraAPY.depositAPY) : 0;
+    const aStaking = a.extraAPY ? Number(a.extraAPY.stakingAPY) : 0;
+    const aTotalApy = aDeposit + aExtra + aStaking;
+
+    const bDeposit = Number(b.depositApy);
+    const bExtra = b.extraAPY ? Number(b.extraAPY.depositAPY) : 0;
+    const bStaking = b.extraAPY ? Number(b.extraAPY.stakingAPY) : 0;
+    const bTotalApy = bDeposit + bExtra + bStaking;
+
     return bTotalApy - aTotalApy;
   })
   .slice(0, 3)
@@ -29,7 +37,12 @@ export async function GET() {
     tokenAddress: pool.asset.type,
     depositApy: pool.depositApy,
     extraDepositApy: pool.extraAPY ? pool.extraAPY.depositAPY : null,
+    stakingAPY: pool.extraAPY ? pool.extraAPY.stakingAPY : null,
+    totalApy: Number(pool.depositApy) +
+      (pool.extraAPY ? Number(pool.extraAPY.depositAPY) : 0) +
+      (pool.extraAPY ? Number(pool.extraAPY.stakingAPY) : 0),
   }));
+  
 
 
     // Process the data for borrowing pools (lowest borrow APY)

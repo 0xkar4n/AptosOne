@@ -10,7 +10,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: "AptosOne",
-  description: "Your one step solution to access all the aptos protocol in one place",
+  description: "One place stop for all your onchain transaction on Aptos chain",
 };
 
 export default function RootLayout({
