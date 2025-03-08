@@ -77,15 +77,12 @@ export default function TopPoolsPage() {
     fetchPools();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="space-y-8 p-4">
-        <LoadingPoolList /> {/* Lending Pools */}
-        <LoadingPoolList /> {/* Borrowing Pools */}
-      </div>
-    );
-  }
-
+  if (loading) return (
+    <div className="space-y-8 p-4">
+      <LoadingPoolList /> {/* Lending Pools */}
+      <LoadingPoolList /> {/* Borrowing Pools */}
+    </div>
+  );
   if (error) return <p>Error: {error}</p>;
   if (!data) return null;
 
