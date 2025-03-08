@@ -1,20 +1,13 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/ui/sidebar";
-import { Toaster } from "sonner";
 
-import WalletProvider from "@/components/WalletProvider";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const inter = Inter({ subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+
 });
 
 export const metadata: Metadata = {
@@ -28,17 +21,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" >
-       <body>
-       <WalletProvider >
-
-
-        <Sidebar>
-          {children}
-          <Toaster richColors position="bottom-right" />
-        </Sidebar>
-       
-       </WalletProvider>
+    <html lang="en">
+      <body className={`${inter.className} ${spaceGrotesk.variable}`}>
+        {children}
       </body>
     </html>
   );
