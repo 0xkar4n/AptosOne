@@ -4,6 +4,8 @@ import "./globals.css";
 import Sidebar from "@/components/ui/sidebar";
 import { Toaster } from "sonner";
 
+import WalletProvider from "@/components/WalletProvider";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -28,10 +30,15 @@ export default function RootLayout({
   return (
     <html lang="en" >
        <body>
+       <WalletProvider >
+
+
         <Sidebar>
           {children}
           <Toaster richColors position="bottom-right" />
         </Sidebar>
+       
+       </WalletProvider>
       </body>
     </html>
   );
