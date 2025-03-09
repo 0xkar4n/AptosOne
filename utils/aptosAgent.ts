@@ -9,6 +9,7 @@ export async function aptosAgent(userWalletAddress: string) {
   const aptos = new Aptos(aptosConfig);
 
   const response=await fetchAptosOneWallet(userWalletAddress);
+   console.log("response data from fetchaptosone in aptos agetn",response)
 
 
   const privateKeyStr = decryptKey(response.data.encryptedPrivateKey);

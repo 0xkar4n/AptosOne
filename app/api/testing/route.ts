@@ -7,7 +7,7 @@ import {
     PrivateKey,
     PrivateKeyVariants,
   } from "@aptos-labs/ts-sdk";
-  import { ChatOpenAI } from '@langchain/openai';
+  import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
   import { HumanMessage } from "@langchain/core/messages";
   import { MemorySaver } from "@langchain/langgraph";
   import { createReactAgent } from "@langchain/langgraph/prebuilt";
@@ -15,18 +15,23 @@ import {
   
   import { NextResponse } from "next/server";
 import { aptosAgent } from "@/utils/aptosAgent";
-  
-const llm = new ChatOpenAI({
+
+
+const llm = new ChatGoogleGenerativeAI({
   temperature: 0.7,
-  model: 'gpt-4o-mini',
-  apiKey: process.env.OPENAI_API_KEY,
+  model: "gemini-2.0-flash", // Google's Gemini model
+  // Optionally include your API key if not set via env variable:
+  // googleApiKey: "YOUR_GOOGLE_API_KEY",
 });
 
 
 
-  export async function GET(request: Request) {
+  export async function POST(req: Request) {
     try {
-        const {agent:agentRuntime,signer,account}= await aptosAgent()
+
+      const { prompt,userWalletAddress }=await req.json()
+      console.log("req data in testing api ",prompt,userWalletAddress)
+        const {agent:agentRuntime,signer,account}= await aptosAgent(userWalletAddress)
       
 
       
@@ -51,8 +56,8 @@ const llm = new ChatOpenAI({
         checkpointSaver: memorySaver,
         messageModifier: `
           You are an agent that interacts with the Aptos blockchain using the move-agent-kit.
-          When a user asks for the top lending and borrowing pools, use the "aptos_get_top_apy" tool.
-          The input JSON should be a string (e.g., "{}").
+          The response also contains token/token[] which contains the name and address of the token and the decimals.
+		      WHEN YOU RETURN ANY TOKEN AMOUNTS, RETURN THEM ACCORDING TO THE DECIMALS OF THE TOKEN.
         `,
       });
   
@@ -62,7 +67,7 @@ const llm = new ChatOpenAI({
       // Stream a command to fetch the top lending and borrowing pools
       const stream = await agent.stream(
         {
-          messages: [new HumanMessage("show my wallet balance")],
+          messages: [new HumanMessage(prompt)],
         },
         config
       );

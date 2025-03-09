@@ -78,14 +78,17 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       }
       setIsSubmitting(true);
       const protocol = title;
-      const payload = { protocol, value: amount };
+      const payload = { protocol, value: amount,userWalletAddress:account?.address.toString()  };
       const response = await axios.post("/api/v1/unstake", payload);
-      setResult(JSON.stringify(response.data.result));
-      setError("");
+      toast.dismiss();
+      toast.success("UnStake successful!", {
+        description: `Successfully UnStaked ${amount} APT with ${protocol}`,
+      });
     } catch (err: any) {
-      setError(err.response?.data?.error || err.message);
-      setResult("");
-    } finally {
+      toast.dismiss();
+      toast.error("UnStake failed", {
+        description: err.response?.data?.error || err.message || "An error occurred while staking",
+      });
       setIsSubmitting(false);
     }
   };
@@ -120,9 +123,16 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
             <TabsContent value="stake" className="mt-6">
               <Label htmlFor="amount" className="block mb-2 text-sm font-medium text-gray-300">
                 Amount of APT to Stake
-                <span className="ml-2 text-gray-500">
+                {connected?
+                <span className="ml-2 text-gray-500">               
                   (Max: {loading ? "Loading..." : `${APTbalance} APT`})
                 </span>
+                :
+                <span className="ml-2 text-gray-500">               
+                0 APT
+               </span>
+                }
+
               </Label>
               <div className="relative overflow-hidden mt-4">
                 <Input
