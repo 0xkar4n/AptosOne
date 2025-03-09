@@ -61,23 +61,19 @@ type PoolData = {
           };
         }
       });
-      console.log("pooldict created")
+      console.log("pooldict created",poolsDict)
 
 
       const agent =await llmAgent(userWalletAddress);
 
       const prompt = `
-      We have the following pool data:
-      ${JSON.stringify(poolsDict, null, 2)}
+We have the following Joule pool data: ${JSON.stringify(poolsDict, null, 2)}. Please analyze this information to determine the optimal and positive high apy strategy for 
+maximizing yield when converting ${userStrategy}. Consider all possible approaches such as direct lending, borrowing, multi-step lending and borrowing, 
+and token swaps. Use your internal reasoning to decide the best method that yields the highest APY for the ${userStrategy}, but only provide your final 3 
+recommendation along with the expected but concise effective yield use high apy for lending and low apy for borrowing with apy details of each step and calculation of the yeild in each step , without revealing any internal thought process and in JSON format.
+`;
+
       
-      The user strategy is: "${userStrategy}"
-      
-      Please analyze this data and determine the best APY approach for converting APT to USDT.
-      Consider:
-      - Whether to lend directly, borrow, or use a multi-step strategy involving both lending and borrowing.
-      - The impact of the LTV values.
-      Provide your chain-of-thought reasoning before recommending the final strategy along with the expected APY.
-      `;
 
       const config = { configurable: { thread_id: "AI Strategy" } };
       
@@ -91,14 +87,15 @@ type PoolData = {
       let resultText = "";
       for await (const chunk of stream) {
         if ("agent" in chunk) {
-          resultText += "Agent: " + chunk.agent.messages[0].content + "\n";
+          resultText +=    chunk.agent.messages[0].content + "\n";
         } else if ("tools" in chunk) {
           resultText += "Tool: " + chunk.tools.messages[0].content + "\n";
         }
-        resultText += "-------------------\n";
       }
+
+      const finalResult = JSON.parse(resultText.trim().slice(7).slice(0,-4));
   
-      return NextResponse.json({ result: resultText });
+      return NextResponse.json({ finalResult });
     }
     catch(error: any){
         console.error("Error in POST handler:", error);

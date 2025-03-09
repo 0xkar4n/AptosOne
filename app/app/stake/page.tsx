@@ -6,7 +6,7 @@ const StakePage = () => {
     <main className="dark">
       <h1 className="text-3xl font-bold text-white text-center mb-6">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-amber-400">
-            Yield Strategies
+            Staking 
           </span>
         </h1>
       <StakingCards />

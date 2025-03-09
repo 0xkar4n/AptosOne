@@ -8,6 +8,7 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 const llmAgent = async(userWalletAddress:string) => {
+    console.log(userWalletAddress)
 
     const record = await prisma.userWallet.findUnique({
         where: { walletAddress: userWalletAddress },
