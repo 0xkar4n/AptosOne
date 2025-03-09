@@ -50,9 +50,9 @@ export default function Home() {
             >
               Get Started
             </motion.button>
-            <Button  size="lg" variant="outline">
+            {/* <Button  size="lg" variant="outline">
               View Documentation
-            </Button>
+            </Button> */}
           </div>
         </div>
 

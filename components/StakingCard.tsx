@@ -95,7 +95,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
           />
           <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-0.75 p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D] md:p-6">
             <div className="flex items-center space-x-2">
-              <div className="w-fit rounded-lg border border-gray-600 p-2">
+              <div className="w-fit rounded-full">
                 {icon}
               </div>
               <h3 className="text-xl font-semibold text-black dark:text-white">
@@ -104,7 +104,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
             </div>
             
             <Tabs defaultValue="stake" value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList>
                 <TabsTrigger value="stake">Stake</TabsTrigger>
                 <TabsTrigger value="unstake">Unstake</TabsTrigger>
               </TabsList>
