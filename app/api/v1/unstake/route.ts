@@ -10,7 +10,7 @@ import { aptosAgent } from "@/utils/aptosAgent";
  */
 export const POST = async (req: Request) => {
   try {
-    const { protocol, value } = await req.json();
+    const { protocol, value,userWalletAddress } = await req.json();
     // Validate and convert value
     const rawValue = Number(value);
     if (isNaN(rawValue) || rawValue <= 0) {
@@ -24,7 +24,7 @@ export const POST = async (req: Request) => {
     }
 
     console.log(`Unstaking: protocol = ${protocol} and value = ${amountInInteger}`);
-    const { agent } = await aptosAgent();
+    const { agent } = await aptosAgent(userWalletAddress);
     let result;
     const protocolLower = protocol.toLowerCase();
 
