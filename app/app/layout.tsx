@@ -1,6 +1,7 @@
 "use client"
 
-import ClientLayout from "@/components/ClientLayout"
+import Sidebar from "@/components/ui/sidebar"
+import WalletProvider from "@/components/WalletProvider"
 import { Toaster } from "sonner"
 
 export default function AppLayout({
@@ -9,9 +10,12 @@ export default function AppLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClientLayout>
-      {children}
+    <WalletProvider>
+      <Sidebar>
+        {children}
+        <Toaster richColors position="bottom-right" />
+      </Sidebar>
       <Toaster />
-    </ClientLayout>
+    </WalletProvider>
   )
 } 

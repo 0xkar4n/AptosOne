@@ -10,6 +10,7 @@ import { GlowingEffect } from "@/components/ui/glowing-effect"
 import { motion } from "framer-motion"
 import { useAptBalance } from "@/custom/useAptBalance"
 import { SparklesText } from "./sparkles-text"
+import SidebarWallet from "../SidebarWallet"
 
 interface Links {
   label: string
@@ -120,29 +121,8 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
 
         {/* Wallet Balance */}
         <div className="mt-auto pt-6">
-          <div className="bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-800 rounded-xl p-4 shadow-lg border border-gray-700/50 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-amber-500/10 opacity-30" />
 
-            <h3 className="text-gray-400 text-sm mb-1 font-medium">Wallet Balance</h3>
-
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="absolute inset-0 bg-purple-500/30 blur-md rounded-full" />
-                <img
-                  src="https://s2.coinmarketcap.com/static/img/coins/64x64/21794.png"
-                  alt="APT Logo"
-                  className="w-10 h-10 relative z-10"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
-                  {balance !== null ? `${balance.toFixed(4)}` : "Loading..."}
-                </span>
-                <span className="text-xs text-gray-400">APT</span>
-              </div>
-            </div>
-          </div>
+       <SidebarWallet />
         </div>
       </div>
 
