@@ -7,6 +7,8 @@ import axios from "axios";
 import { toast } from "sonner";
 import { fetchAptosOneWallet } from "@/utils/fetchAptosOneWallet";
 import { IconCopy, IconLogout } from "@tabler/icons-react";
+import { RainbowButton } from "@/components/magicui/rainbow-button";
+ 
 import { Button } from "./ui/button";
 import { ShineBorder } from "./ui/shine-border";
 import { BorderBeam } from "./ui/border-beam";
@@ -54,7 +56,8 @@ const SidebarWallet = () => {
   const onConnect = async (walletName: string) => {
     console.log("Attempting to connect with:", walletName);
     try {
-      await connect(walletName);
+      debugger
+      const res =  await connect(walletName);
       toast.success("Wallet Connected");
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
@@ -76,6 +79,7 @@ const SidebarWallet = () => {
   // Create a new AptosOne wallet via your backend API
   const handleCreateWallet = async () => {
     try {
+      debugger
       if (!userWalletAddress) return;
       toast.loading("Creating your AptosOne Wallet...");
       const response = await axios.post("/api/wallet", { userWalletAddress });
@@ -90,6 +94,7 @@ const SidebarWallet = () => {
     } catch (error) {
       console.error("Error creating wallet:", error);
       alert("Error creating wallet");
+      toast.dismiss();
     }
   };
 
@@ -107,7 +112,7 @@ const SidebarWallet = () => {
       {!connected ? (
         <div className="relative overflow-hidden">
         
-        <Button
+        <RainbowButton
           onClick={() => onConnect(wallet?.name || "Petra")}
           className="bg-black text-white hover:bg-black/80 font-medium py-2 px-4 rounded-lg w-full"
         >
@@ -125,7 +130,7 @@ const SidebarWallet = () => {
       />
      
       
-        </Button>
+        </RainbowButton>
         </div>
       ) : (
         <>
@@ -137,8 +142,15 @@ const SidebarWallet = () => {
                 {shortAddress(account?.address.toString() ?? "")}
               </p>
             </div>
-            <button onClick={handleDisconnect} className="hover:text-red-400">
-              <IconLogout size={20} />
+            <button 
+  onClick={handleDisconnect} 
+  className="group relative flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 shadow-lg transition-all duration-300 transform hover:scale-110 active:scale-95"
+>
+<div className="absolute inset-0 rounded-lg bg-white opacity-10 group-hover:opacity-20 transition-opacity duration-300"></div>
+<IconLogout 
+    size={20}  
+    className="text-white transition-transform duration-300 group-hover:rotate-[-10deg]"
+  />
             </button>
           </div>
           {/* Conditional section: Show AptosOne wallet details if created, else show button to create */}
@@ -162,12 +174,12 @@ const SidebarWallet = () => {
               <p className="text-gray-300 text-sm">
                 You haven't created an AptosOne Wallet yet.
               </p>
-              <Button
+              <RainbowButton
                 onClick={handleCreateWallet}
                 className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full"
               >
                 Create AptosOne Wallet
-              </Button>
+              </RainbowButton>
             </div>
           )}
         </>

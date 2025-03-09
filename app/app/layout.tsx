@@ -3,6 +3,7 @@
 import Sidebar from "@/components/ui/sidebar"
 import WalletProvider from "@/components/WalletProvider"
 import { Toaster } from "sonner"
+import { ChatWidget } from "@/components/ChatWidget"
 
 export default function AppLayout({
   children,
@@ -16,6 +17,7 @@ export default function AppLayout({
         <Toaster richColors position="bottom-right" />
       </Sidebar>
       <Toaster />
+      <ChatWidget />
     </WalletProvider>
   )
 } 

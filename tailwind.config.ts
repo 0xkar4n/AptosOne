@@ -62,7 +62,8 @@ const config: Config = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		animation: {
-  			shine: 'shine var(--duration) infinite linear'
+  			shine: 'shine var(--duration) infinite linear',
+  			rainbow: 'rainbow var(--speed, 2s) infinite linear'
   		},
   		keyframes: {
   			shine: {
@@ -144,6 +145,14 @@ const config: Config = {
   				'90%': {
   					bottom: '50%',
   					right: '25%'
+  				}
+  			},
+  			rainbow: {
+  				'0%': {
+  					'background-position': '0%'
+  				},
+  				'100%': {
+  					'background-position': '200%'
   				}
   			}
   		}
