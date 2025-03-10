@@ -22,12 +22,12 @@ export function ChatWidget() {
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
+    
+  const [result, setResult] = useState("");
 
     const { account } = useWallet();
-    // const userWalletAddress = 'useWallet().account?.address.toString()';
-    const userWalletAddress = '0x8201b744314a1f3f95fb5a12b8858fd751169be96634f3fc4c0407e0aea66739';
+
     const handleSubmit = async (e: React.FormEvent) => {
-        debugger
         e.preventDefault();
         if (!input.trim()) return;
 
@@ -36,32 +36,31 @@ export function ChatWidget() {
         setMessages((prev) => [...prev, userMessage]);
         setInput('');
         setIsLoading(true);
-
+        // setResult("");
 
         try {
 
             debugger
+            const userWalletAddress = account?.address ? account.address.toString() : "";
             const response = await axios.post('/api/chat', { prompt: input, userWalletAddress: userWalletAddress });
-            let words = response.data.split(' ');
+            let words = response.data.result.split(' ');
             let typedMessage = '';
 
             // Add blank assistant message first
-            setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
+            setMessages((prev) => [...prev, { role: 'assistant', content: words[0]}]);
             setIsLoading(false); // Hide loading dots as soon as AI starts responding
 
             for (let i = 0; i < words.length; i++) {
-                await new Promise((resolve) => setTimeout(resolve, 50)); // Typing delay
+                await new Promise((resolve) => setTimeout(resolve, 50)); // Typing effect
                 typedMessage += (i === 0 ? '' : ' ') + words[i];
-
+            
                 setMessages((prev) =>
                     prev.map((msg, index) =>
-                        index === prev.length - 1 // Update only the last assistant message
-                            ? { ...msg, content: typedMessage }
-                            : msg
+                        index === prev.length - 1 ? { ...msg, content: typedMessage } : msg
                     )
                 );
-
-                // Auto-scroll after each word update
+            
+                // Auto-scroll
                 scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
             }
         } catch (error) {
