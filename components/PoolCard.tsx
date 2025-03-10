@@ -1,11 +1,15 @@
 // components/PoolCard.tsx
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { Button } from "@/components/ui/button";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { APYTooltip } from "./APTtooltip"; // adjust path as needed
 import { Input } from "./ui/input";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { LinkPreview } from "./ui/link-preview";
 
 interface PoolCardProps {
   icon: string; // URL to the icon image
@@ -18,6 +22,10 @@ interface PoolCardProps {
   stakingApy?: number | null;
   // Borrowing pool property
   borrowApy?: number;
+  // Optionally pass these as props or get from context/state
+  tokenAddress?: string;
+  userWalletAddress?: string;
+  ltv?: number; // new property: Loan-to-Value percentage
 }
 
 const PoolCard: React.FC<PoolCardProps> = ({
@@ -29,7 +37,35 @@ const PoolCard: React.FC<PoolCardProps> = ({
   extraApy,
   stakingApy,
   borrowApy,
+  tokenAddress,
+  userWalletAddress,
+  ltv,
 }) => {
+  // State to capture the amount input
+  const [amount, setAmount] = useState("");
+  const { connected } = useWallet();
+
+  const handleAgentAction = async () => {
+    try {
+      // Prepare payload based on the pool type
+      const payload = {
+        action: type === "Lending" ? "deposit" : "borrow",
+        amount,
+        tokenAddress,
+        userWalletAddress,
+      };
+
+      const response = await axios.post("/api/v1/top-pools", payload);
+      toast.success(`Action succeeded: ${response.data.result}`);
+    } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.error) {
+        toast.error(`Action failed: ${error.response.data.error}`);
+      } else {
+        toast.error(`An unexpected error occurred: ${error.message}`);
+      }
+    }
+  };
+
   return (
     <div className="relative h-full p-4 rounded-lg">
       <GlowingEffect
@@ -52,11 +88,11 @@ const PoolCard: React.FC<PoolCardProps> = ({
         <div className="mt-4">
           {type === "Lending" ? (
             <div>
-              <p className="text-sm text-gray-300">
-                Deposit APY: {depositApy?.toFixed(2)}%
+              <p className="text-sm text-white">
+                Deposit APY : {depositApy?.toFixed(2)}%
               </p>
-              <p className="text-sm text-gray-300">
-                Total APY: {totalApy?.toFixed(2)}%
+              <p className="text-sm text-white">
+                Total APY : {totalApy?.toFixed(2)}%
                 {depositApy != null &&
                   extraApy != null &&
                   stakingApy != null &&
@@ -71,28 +107,58 @@ const PoolCard: React.FC<PoolCardProps> = ({
               </p>
             </div>
           ) : (
-            <p className="text-sm text-gray-300">
-              Borrow APY: {borrowApy?.toFixed(2)}%
+            <p className="text-sm text-white">
+              Borrow APY : {borrowApy?.toFixed(2)}%
+            </p>
+          )}
+          {typeof ltv === "number" && (
+            <p className="text-sm text-white">
+              LTV : {ltv.toFixed(2)}%
             </p>
           )}
         </div>
         <div className="relative overflow-hidden mt-4">
-                  <Input
-                    id="unstake-amount"
-                    type="text"
-                    placeholder="Enter amount"
-                    className="w-full p-2 border rounded-lg bg-gray-800 text-white"
-                  />
-                </div>
+          <Input
+            id="amount-input"
+            type="text"
+            placeholder="Enter amount"
+            className="w-full p-2 border rounded-lg bg-gray-800 text-white"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </div>
         <div className="relative overflow-hidden mt-4">
           <ShineBorder
             shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
             className="rounded-lg"
+            borderWidth={2}
           />
+          {connected ? (
+            <Button
+              onClick={handleAgentAction}
+              className="w-full bg-black hover:bg-black/40 text-white rounded-lg"
+            >
+              {type === "Lending"
+                ? "Tell agent to Deposit"
+                : "Tell agent to Borrow"}
+            </Button>
+          ) : (
+            <Button
+              onClick={handleAgentAction}
+              className="w-full bg-black hover:bg-black/40 text-white rounded-lg"
+            >
+              Please Connect your wallet
+            </Button>
+          )}
+        </div>
 
-          <Button className="w-full bg-black hover:bg-black/40 text-white rounded-lg">
-             {type === "Lending" ? "Tell agent to Deposit" : "Tell agenet to Borrow"}
-          </Button>
+        <div className=" flex justify-center pt-2 text-sm">
+          <h1>For more details, visit {" "}
+            <LinkPreview url="https://www.joule.finance/" className="font-bold text-orange-500">
+            Joule Finance
+            </LinkPreview>
+        
+          </h1>
         </div>
       </div>
     </div>

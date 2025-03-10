@@ -1,12 +1,16 @@
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import axios from "axios";
+
 export async function generateResponse(userInput: string): Promise<string> {
+
+    const {account}=useWallet()
+
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userInput }),
-      });
-  
-      const data = await response.json();
+   debugger
+     const userWalletAddress=account?.address.toString();
+      const response = await axios.post(`/api/chat`, { prompt,userWalletAddress });
+      console.log("response in testing frontend",response.data)
+      const data = await response.data;
       return data.response || 'Sorry, I could not generate a response.';
     } catch (error) {
       console.error('Error:', error);

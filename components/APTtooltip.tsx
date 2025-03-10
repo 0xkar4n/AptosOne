@@ -29,7 +29,7 @@ export const APYTooltip: React.FC<APYTooltipProps> = ({
             i
           </span>
         </TooltipTrigger>
-        <TooltipContent className="bg-yellow-300 text-black text-xs p-2 rounded">
+        <TooltipContent className="bg-yellow-400 text-black text-xs p-2 rounded">
           <div className="flex flex-col gap-1">
             <div className="flex justify-between">
               <span>Deposit APY : </span>

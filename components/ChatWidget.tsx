@@ -8,6 +8,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { MessageCircle, Send, Bot, X, Minimize2 } from 'lucide-react';
 import { generateResponse } from '@/lib/gemini';
 import { cn } from '@/lib/utils';
+import axios from 'axios';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -21,7 +23,11 @@ export function ChatWidget() {
     const [isLoading, setIsLoading] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
+    const { account } = useWallet();
+    // const userWalletAddress = 'useWallet().account?.address.toString()';
+    const userWalletAddress = '0x8201b744314a1f3f95fb5a12b8858fd751169be96634f3fc4c0407e0aea66739';
     const handleSubmit = async (e: React.FormEvent) => {
+        debugger
         e.preventDefault();
         if (!input.trim()) return;
 
@@ -33,29 +39,31 @@ export function ChatWidget() {
 
 
         try {
-            const response = await generateResponse(input);
-      let words = response.split(' '); // Split response into words
-      let typedMessage = '';
 
-      // Add blank assistant message first
-      setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
-      setIsLoading(false); // Hide loading dots as soon as AI starts responding
+            debugger
+            const response = await axios.post('/api/chat', { prompt: input, userWalletAddress: userWalletAddress });
+            let words = response.data.split(' ');
+            let typedMessage = '';
 
-      for (let i = 0; i < words.length; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 50)); // Typing delay
-        typedMessage += (i === 0 ? '' : ' ') + words[i];
+            // Add blank assistant message first
+            setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
+            setIsLoading(false); // Hide loading dots as soon as AI starts responding
 
-        setMessages((prev) =>
-          prev.map((msg, index) =>
-            index === prev.length - 1 // Update only the last assistant message
-              ? { ...msg, content: typedMessage }
-              : msg
-          )
-        );
+            for (let i = 0; i < words.length; i++) {
+                await new Promise((resolve) => setTimeout(resolve, 50)); // Typing delay
+                typedMessage += (i === 0 ? '' : ' ') + words[i];
 
-        // Auto-scroll after each word update
-        scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }
+                setMessages((prev) =>
+                    prev.map((msg, index) =>
+                        index === prev.length - 1 // Update only the last assistant message
+                            ? { ...msg, content: typedMessage }
+                            : msg
+                    )
+                );
+
+                // Auto-scroll after each word update
+                scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -125,35 +133,35 @@ export function ChatWidget() {
                             </div>
                         ) : (
                             <ScrollArea className="flex-1 p-4">
-                            <div className="space-y-4">
-                                {messages.map((message, index) => (
-                                    <div
-                                        key={index}
-                                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'
-                                            }`}
-                                    >
+                                <div className="space-y-4">
+                                    {messages.map((message, index) => (
                                         <div
-                                            className={`max-w-[80%] rounded-lg p-3 ${message.role === 'user'
-                                                    ? 'bg-primary text-primary-foreground'
-                                                    : 'bg-muted'
+                                            key={index}
+                                            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'
                                                 }`}
                                         >
-                                            {message.content}
-                                        </div>
-                                    </div>
-                                ))}
-                                {isLoading && (
-                                    <div className="flex justify-start">
-                                        <div className="max-w-[80%] rounded-lg p-3 bg-muted">
-                                            <div className="flex space-x-2">
-                                                <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
-                                                <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.2s]" />
-                                                <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.4s]" />
+                                            <div
+                                                className={`max-w-[80%] rounded-lg p-3 ${message.role === 'user'
+                                                    ? 'bg-primary text-primary-foreground'
+                                                    : 'bg-muted'
+                                                    }`}
+                                            >
+                                                {message.content}
                                             </div>
                                         </div>
-                                    </div>
-                                )}
-                            </div>
+                                    ))}
+                                    {isLoading && (
+                                        <div className="flex justify-start">
+                                            <div className="max-w-[80%] rounded-lg p-3 bg-muted">
+                                                <div className="flex space-x-2">
+                                                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
+                                                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.2s]" />
+                                                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.4s]" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </ScrollArea>
                         )}
                     </ScrollArea>

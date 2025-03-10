@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 interface Pool {
   name: string;
@@ -17,6 +18,7 @@ interface Pool {
   totalApy?: number;
   borrowApy?: number;
   icon?: string;
+  ltv?:number
 }
 
 interface TopPoolsData {
@@ -64,11 +66,13 @@ export default function TopPoolsPage() {
   const [data, setData] = useState<TopPoolsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const {account}=useWallet();
 
   useEffect(() => {
     async function fetchPools() {
       try {
         const response = await axios.get("/api/v1/top-pools");
+        console.log(response.data)
         setData(response.data);
       } catch (err: any) {
         setError(err.message || "An error occurred");
@@ -95,14 +99,18 @@ export default function TopPoolsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           {data.topLendPools.map((pool, index) => (
             <PoolCard
-              key={index}
-              icon={pool.icon || "/placeholder.png"}
-              title={pool.name}
-              type="Lending"
-              depositApy={pool.depositApy || 0}
-              extraApy={pool.extraDepositApy || null}
-              stakingApy={pool.stakingAPY || null}
-              totalApy={pool.totalApy || 0}
+            key={index}
+            icon={pool.icon || "/placeholder.png"}
+            title={pool.name}
+            type="Lending"
+            depositApy={pool.depositApy || 0}
+            extraApy={pool.extraDepositApy || null}
+            stakingApy={pool.stakingAPY || null}
+            totalApy={pool.totalApy || 0}
+            // Pass the tokenAddress and userWalletAddress if available.
+            tokenAddress={pool.tokenAddress}
+            userWalletAddress={account?.address.toString()}
+            ltv={pool.ltv}
             />
           ))}
         </div>
@@ -117,6 +125,9 @@ export default function TopPoolsPage() {
               title={pool.name}
               type="Borrowing"
               borrowApy={pool.borrowApy || 0}
+              tokenAddress={pool.tokenAddress}
+              userWalletAddress={account?.address.toString()}
+              ltv={pool.ltv}
             />
           ))}
         </div>
