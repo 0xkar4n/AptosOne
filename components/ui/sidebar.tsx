@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import type React from "react"
 import { useState, createContext, useContext, useEffect } from "react"
-import { IconWallet, IconArrowsExchange, IconDroplet, IconMenu2 } from "@tabler/icons-react"
+import { IconWallet, IconArrowsExchange, IconDroplet, IconMenu2, IconListDetails } from "@tabler/icons-react"
 import { ShineBorder } from "@/components/ui/shine-border"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 import { motion } from "framer-motion"
@@ -72,6 +72,7 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
     { label: "Stake", href: "/app/stake", icon: <IconWallet className="w-5 h-5" /> },
     { label: "Top Pools", href: "/app/top-pools", icon: <IconDroplet className="w-5 h-5" />  },
     { label: "AI Strategy", href: "/app/ai-strategy", icon: <IconArrowsExchange className="w-5 h-5" /> },
+    { label: "Positions", href: "/app/positions", icon: <IconListDetails className="w-5 h-5" /> },
   ]
 
   return (
