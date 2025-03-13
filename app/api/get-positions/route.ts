@@ -14,7 +14,7 @@ export const GET = async(req:Request) => {
     try {
       const agent =await llmAgent(userWalletAddress);
 
-      const prompt = `Get all of my joule positions and if no positions are there then tell No postions only if positions are there then send me that data only `;
+      const prompt = `Get all of my joule positions and if no positions are there then tell No postions only if positions are there then send me that data only in json format of response:""`;
 
       
 
