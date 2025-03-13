@@ -28,7 +28,7 @@ model: "gemini-2.0-flash", // Google's Gemini model
 
 export async function POST(req: Request) {
   try {
-    
+    debugger
     const { prompt,userWalletAddress }=await req.json()
     console.log("req data in testing api ",prompt,userWalletAddress)
       const {agent:agentRuntime,signer,account}= await aptosAgent(userWalletAddress)

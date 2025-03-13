@@ -10,6 +10,7 @@ import { generateResponse } from '@/lib/gemini';
 import { cn } from '@/lib/utils';
 import axios from 'axios';
 import { useWallet } from '@aptos-labs/wallet-adapter-react';
+import { toast } from 'sonner';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -22,6 +23,7 @@ export function ChatWidget() {
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const {connected} = useWallet();
     
   const [result, setResult] = useState("");
 
@@ -43,10 +45,20 @@ export function ChatWidget() {
             debugger
             const userWalletAddress = account?.address ? account.address.toString() : "";
             const response = await axios.post('/api/chat', { prompt: input, userWalletAddress: userWalletAddress });
-            let words = response.data.result.split(' ');
+            
+            let replyText = "";
+            if (typeof response.data.result === "object") {
+                replyText = response.data.result.message || JSON.stringify(response.data.result);
+            } else {
+                replyText = response.data.result;
+            }
+            if(replyText.includes("Object")) {
+                const resArr: string[] = replyText.split(/[.,]/);
+                replyText = resArr[1];
+            }
+            let words = replyText.split(' ');
             let typedMessage = '';
 
-            // Add blank assistant message first
             setMessages((prev) => [...prev, { role: 'assistant', content: words[0]}]);
             setIsLoading(false); // Hide loading dots as soon as AI starts responding
 
@@ -65,12 +77,22 @@ export function ChatWidget() {
             }
         } catch (error) {
             console.error('Error:', error);
+            toast.error('Please add some funds to your wallet to chat with the AI');
+            setMessages(messages.filter((_, index) => index !== messages.length));
+            // console.log(messages);
         } finally {
             setIsLoading(false);
         }
     };
 
+    if(!connected) {
+        return null;
+    }
     return (
+
+
+
+        
         <div className="fixed bottom-4 m-10 mb-8 right-4 z-50">
             {!isOpen ? (
                 <Button
@@ -140,11 +162,12 @@ export function ChatWidget() {
                                                 }`}
                                         >
                                             <div
-                                                className={`max-w-[80%] rounded-lg p-3 ${message.role === 'user'
-                                                    ? 'bg-primary text-primary-foreground'
-                                                    : 'bg-muted'
-                                                    }`}
-                                            >
+    className={`max-w-[80%] break-words rounded-lg p-3 ${
+        message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
+    }`
+    
+    }style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }} 
+>
                                                 {message.content}
                                             </div>
                                         </div>
@@ -166,7 +189,7 @@ export function ChatWidget() {
                     </ScrollArea>
 
                     <form onSubmit={handleSubmit} className="p-4 border-t flex space-x-2">
-                        <Input
+                        <Input 
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Type your message..."

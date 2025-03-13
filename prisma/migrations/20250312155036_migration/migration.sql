@@ -2,7 +2,7 @@
 CREATE TABLE "UserWallet" (
     "id" TEXT NOT NULL,
     "walletAddress" TEXT NOT NULL,
-    "aptosOneWalletAddress" TEXT NOT NULL,
+    "aptosOneWalletAddress" VARCHAR(67) NOT NULL,
     "encryptedPrivateKey" TEXT NOT NULL,
     "createdTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
