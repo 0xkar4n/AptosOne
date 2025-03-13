@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import axios from 'axios';
 import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { toast } from 'sonner';
+import { AnimatedBeam } from './ui/animated-beam';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -92,8 +93,7 @@ export function ChatWidget() {
 
 
 
-        
-        <div className="fixed bottom-4 m-10 mb-8 right-4 z-50">
+            <div className="fixed bottom-4 m-10 mb-8 right-4 z-50">
             {!isOpen ? (
                 <Button
                     onClick={() => setIsOpen(true)}
@@ -203,5 +203,7 @@ export function ChatWidget() {
                 </Card>
             )}
         </div>
+        // </AnimatedBeam>
+        
     );
 }

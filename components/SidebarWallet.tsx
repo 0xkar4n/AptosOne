@@ -39,13 +39,7 @@ const SidebarWallet = () => {
         try {
           debugger
           const response = await fetchAptosOneWallet(addr);
-          
-          // const getPrivateKey = await axios.post("/api/getDecryptedKey", {
-          //   encryptedPrivateKey: response.data.encryptedPrivateKey,
-          // }, {
-          //   headers: { "Content-Type": "application/json" },
-          // });
-
+        
           if (response.success) {
             setCreatedWallet(response.data.aptosOneWalletAddress);
             // setCreatePrivateKey(response.data.encryptedPrivateKey);

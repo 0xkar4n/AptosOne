@@ -21,7 +21,7 @@ const llm = new ChatGoogleGenerativeAI({
 temperature: 0.7,
 model: "gemini-2.0-flash", // Google's Gemini model
 // Optionally include your API key if not set via env variable:
-// googleApiKey: "YOUR_GOOGLE_API_KEY",
+// apiKey: process.env.GOOGLE_API_KEY,
 });
 
 
