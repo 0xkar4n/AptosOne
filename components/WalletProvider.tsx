@@ -13,7 +13,7 @@ const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   return (
     <AptosWalletAdapterProvider
       optInWallets={["Petra"]}
-      autoConnect={false}
+      autoConnect={true}
       dappConfig={{ network: Network.MAINNET }}
       onError={(error) => {
         console.error("Wallet error:", error);

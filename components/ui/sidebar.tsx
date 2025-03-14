@@ -128,7 +128,7 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* Main content */}
-      <main className="h-full flex-1 overflow-y-scroll no-scrollbar p-2 md:p-6 pl-[60px] md:pl-6">{children}</main>
+      <main className="h-full flex-1 overflow-y-scroll no-scrollbar">{children}</main>
     </div>
   )
 }

@@ -109,3 +109,14 @@ recommendation along with the expected but concise effective yield use high apy 
     }
   
 }
+
+
+export const POST = async(req:Request) => {
+  try {
+    const {steps,userWalletAddress,value}=await req.json()
+    
+  } catch (error) {
+    
+  }
+
+}
