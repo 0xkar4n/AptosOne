@@ -30,6 +30,7 @@ const SidebarWallet = () => {
   const [createPrivateKey, setCreatePrivateKey] = useState<string | null>(null);
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
   const [showMenu, setShowMenu] = useState(false);
+  const [checkingCreatedWallet, setCheckingCreatedWallet] = useState(false);
 
   useEffect(() => {
     if (account?.address) {
@@ -38,8 +39,9 @@ const SidebarWallet = () => {
       const checkCreatedWallet = async () => {
         try {
           debugger
+          setCheckingCreatedWallet(true);
           const response = await fetchAptosOneWallet(addr);
-        
+
           if (response.success) {
             setCreatedWallet(response.data.aptosOneWalletAddress);
             // setCreatePrivateKey(response.data.encryptedPrivateKey);
@@ -55,18 +57,18 @@ const SidebarWallet = () => {
       };
       checkCreatedWallet();
     }
-  }, [account?.address]);
+  }, [account?.address,checkingCreatedWallet]);
 
   const onConnect = async (walletName: string) => {
     setIsConnecting(true);
     try {
       await connect(walletName);
-      if(!connected) {
+      if (!connected) {
         toast.success("Wallet Connected");
-      }else{
+      } else {
         toast.error("Wallet Not Connected");
       }
-      
+
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
       toast.error("Failed to connect wallet");
@@ -151,8 +153,8 @@ const SidebarWallet = () => {
                 {shortAddress(account?.address.toString() ?? "")}
               </p>
             </div>
-            <button 
-              onClick={handleDisconnect} 
+            <button
+              onClick={handleDisconnect}
               className="group relative flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 shadow-lg transition-all duration-300 transform hover:scale-110 active:scale-95"
             >
               <div className="absolute inset-0 rounded-lg bg-white opacity-10 group-hover:opacity-20 transition-opacity duration-300"></div>
@@ -179,23 +181,23 @@ const SidebarWallet = () => {
                 </button>
 
                 {showMenu && (
-                  <div 
+                  <div
                     className="absolute right-0 bottom-full mb-2 w-40 bg-neutral-800 border border-gray-700 rounded-lg shadow-lg"
                     onMouseLeave={() => setShowMenu(false)}
                   >
-                    <button 
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
                       onClick={() => copyToClipboard(createdWallet, "Wallet Address Copied!")}
                     >
                       <IconClipboard size={16} className="mr-2" /> Copy Address
                     </button>
-                    <button 
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
                       onClick={() => copyToClipboard(createPrivateKey || "", "Private Key Copied!")}
                     >
                       <IconKey size={16} className="mr-2" /> Copy Private Key
                     </button>
-                    <button 
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
                       onClick={() => viewOnExplorer(createdWallet)}
                     >
@@ -205,7 +207,7 @@ const SidebarWallet = () => {
                 )}
               </div>
             </div>
-          ) : (
+          ) : checkingCreatedWallet ? (
             <div className="bg-neutral-700 p-3 rounded-lg">
               <p className="text-gray-300 text-sm">You haven't created an AptosOne Wallet yet.</p>
               <RainbowButton
@@ -215,7 +217,7 @@ const SidebarWallet = () => {
                 Create AptosOne Wallet
               </RainbowButton>
             </div>
-          )}
+          ) : (<div>loading...</div>)}
         </>
       )}
     </div>
