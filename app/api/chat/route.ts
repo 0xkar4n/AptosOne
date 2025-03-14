@@ -21,14 +21,14 @@ const llm = new ChatGoogleGenerativeAI({
 temperature: 0.7,
 model: "gemini-2.0-flash", // Google's Gemini model
 // Optionally include your API key if not set via env variable:
-// apiKey: process.env.GOOGLE_API_KEY,
+// googleApiKey: "YOUR_GOOGLE_API_KEY",
 });
 
 
 
 export async function POST(req: Request) {
   try {
-    debugger
+    
     const { prompt,userWalletAddress }=await req.json()
     console.log("req data in testing api ",prompt,userWalletAddress)
       const {agent:agentRuntime,signer,account}= await aptosAgent(userWalletAddress)
