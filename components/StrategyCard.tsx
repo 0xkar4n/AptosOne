@@ -10,6 +10,8 @@ import { Info, ArrowRight, Sparkles, TrendingUp, ChevronDown, ChevronUp } from "
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import { toast } from "sonner"
+import axios from "axios"
 
 export interface APYBreakdown {
   depositToken: string
@@ -46,7 +48,69 @@ const StrategyCard: React.FC<StrategyCardProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false)
   const [amount, setAmount] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)
+
+  const handleExecuteStrategy = async () => {
+    // Validate input
+    if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+      toast.error("Please enter a valid amount")
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    // Show processing toast
+    const toastId = toast.loading("Processing strategy...", {
+      description: "Please wait while we process your request",
+    })
+
+    try {
+      // Prepare data for API
+      const data = {
+        amount: Number(amount),
+        steps: steps || [],
+        title,
+        investToken,
+        netApy: netApy || 0,
+        expected_effective_yield,
+      }
+
+      // Send request to API
+      const response = await axios.post("/api/ai-strategy", data)
+
+      // Dismiss loading toast and show success
+      toast.dismiss(toastId)
+      toast.success("Strategy executed successfully", {
+        description: "Your strategy has been processed",
+      })
+
+      // Handle successful response
+      console.log("Strategy response:", response.data)
+
+      // Here you could update UI with response data or redirect
+      // For example: router.push(`/strategy/${response.data.id}`);
+    } catch (err) {
+      // Dismiss loading toast
+      toast.dismiss(toastId)
+
+      // Handle error
+      const errorMessage = axios.isAxiosError(err)
+        ? err.response?.data?.message || err.message
+        : "An unexpected error occurred"
+
+      setError(errorMessage)
+      toast.error("Failed to execute strategy", {
+        description: errorMessage,
+      })
+
+      console.error("Strategy execution error:", err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div

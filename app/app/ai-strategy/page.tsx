@@ -13,6 +13,7 @@ import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShineBorder } from "@/components/ui/shine-border"
+import { Separator } from "@/components/ui/separator"
 
 export interface Step {
   action: string
@@ -166,18 +167,18 @@ export default function StrategyPage() {
                         />
                       </div>
                       <p className="mt-2 text-xs text-gray-400">
-                        Enter tokens and strategy type (e.g. "APT to USDT", "ETH lending")
+                        Enter tokens and strategy type (e.g. "USDC to APT", "USDC to WBTC","APT to ABTC")
                       </p>
                     </div>
 
                     <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
                   className="rounded-lg"
-                  borderWidth={2} />
+                  borderWidth={1} />
                       <Button
                         type="submit"
                         disabled={loading || !strategyQuery.trim()}
                         className={cn(
-                          "w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-gray-100 font-medium py-6 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 h-auto disabled:opacity-50",
+                          "w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-gray-100 font-medium py-4 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 h-auto disabled:opacity-50",
                           loading && "relative overflow-hidden",
                         )}
                       >
@@ -206,17 +207,14 @@ export default function StrategyPage() {
                         )}
                       </Button>
                   </CardContent>
-                  <CardFooter className="pt-0 flex justify-center">
-                    <div className="flex items-center text-xs text-gray-400">
-                      <Shield className="w-3 h-3 mr-1" />
-                      <span>Your data is secure and never stored</span>
-                    </div>
-                  </CardFooter>
+                  
                 </Card>
             </motion.form>
           </motion.div>
         </motion.div>
       </div>
+
+      <Separator />
 
     
 
