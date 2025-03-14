@@ -113,7 +113,7 @@ export function ChatWidget() {
                 <BorderBeam
               size={30}
               initialOffset={20}
-              delay={0.02}
+              delay={0.001}
               className="from-transparent via-yellow-500 to-transparent"
               transition={{
                 type: "spring",

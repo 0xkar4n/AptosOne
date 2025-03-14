@@ -67,7 +67,9 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
   const { open, setOpen } = useSidebar()
   const { balance, loading } = useAptBalance();
 
-
+  useEffect(() => {
+    setActiveLink(window.location.pathname) // Set the active link based on the URL when the component mounts
+  }, [])
 
   const links = [
     { label: "Stake", href: "/app/stake", icon: <IconWallet className="w-5 h-5" /> },

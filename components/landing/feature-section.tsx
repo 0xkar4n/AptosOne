@@ -42,8 +42,8 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, ind
           variant="ghost"
           className="p-0 h-auto text-purple-400 hover:text-purple-300 hover:bg-transparent group/btn"
         >
-          Learn more
-          <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+         
+          
         </Button>
       </div>
     </motion.div>

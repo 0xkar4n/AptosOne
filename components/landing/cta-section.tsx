@@ -4,11 +4,12 @@ import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function CtaSection() {
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
-
+  const router = useRouter();
   return (
     <section ref={sectionRef} className="py-24 relative">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(120,50,255,0.15),transparent_70%)]"></div>
@@ -36,17 +37,12 @@ export default function CtaSection() {
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg shadow-purple-900/30 group"
+                onClick={() => router.push("/app")}
               >
                 Get Started Now
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-purple-500/50 text-white hover:bg-purple-950/50 backdrop-blur-sm"
-              >
-                Schedule a Demo
-              </Button>
+              
             </div>
           </div>
         </div>

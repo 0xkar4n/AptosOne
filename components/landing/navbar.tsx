@@ -4,9 +4,11 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,23 +43,16 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {["Features", "How it Works", "Ecosystem", "Docs"].map((item) => (
-            <Link
-              key={item}
-              href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-              className="text-zinc-400 hover:text-white transition-colors"
-            >
-              {item}
-            </Link>
-          ))}
-        </nav>
+        
 
         <div className="flex items-center gap-4">
-          <Button variant="ghost" className="hidden md:flex text-zinc-400 hover:text-white hover:bg-purple-900/20">
+          {/* <Button variant="ghost" className="hidden md:flex text-zinc-400 hover:text-white hover:bg-purple-900/20">
             Log In
-          </Button>
-          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-md shadow-purple-900/20">
+          </Button> */}
+          
+          <Button onClick={()=>{
+            router.push("/app")
+          }} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-md shadow-purple-900/20" >
             Get Started
           </Button>
         </div>
