@@ -1,8 +1,11 @@
+import decryptKey from "@/utils/decryptKey";
+import { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
 
-export default function decryptKey(encryptedText: string): string {
-  debugger
-    const algorithm = "aes-256-cbc";
+
+export default function POST(req: NextApiRequest, res: NextApiResponse) {
+
+  const algorithm = "aes-256-cbc";
     const encryptionPassword = process.env.ENCRYPTION_PASSWORD;
     if (!encryptionPassword) {
       throw new Error("ENCRYPTION_PASSWORD environment variable is not set.");
@@ -10,7 +13,7 @@ export default function decryptKey(encryptedText: string): string {
   
     const key = crypto.scryptSync(encryptionPassword, "salt", 32);
     // Split the stored string into IV and encrypted content
-    const parts = encryptedText.split(":");
+    const parts = req.body.encryptedPrivateKey.split(":");
     if (parts.length !== 2) {
       throw new Error("Invalid encrypted text format");
     }
@@ -22,3 +25,5 @@ export default function decryptKey(encryptedText: string): string {
     decrypted += decipher.final("utf8");
     return decrypted;
   }
+
+
