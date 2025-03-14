@@ -50,6 +50,7 @@ export async function POST(req: Request) {
     const newAccount = new AptosAccount();
     const aptosOneWalletAddress  = newAccount.address().toString();
     const privateKey = newAccount.toPrivateKeyObject().privateKeyHex;
+    
     const encryptedPrivateKey = encrypt(privateKey);
 
     const createdRecord = await prisma.userWallet.create({

@@ -9,11 +9,11 @@ export async function aptosAgent(userWalletAddress: string) {
   const aptos = new Aptos(aptosConfig);
 
   const response=await fetchAptosOneWallet(userWalletAddress);
-   console.log("response data from fetchaptosone in aptos agetn",response)
+   console.log("response data from fetchaptosone in aptos agetn for userWallet",userWalletAddress,response)
 
 
   const privateKeyStr = decryptKey(response.data.encryptedPrivateKey);
-  console.log(privateKeyStr)
+
   if (!privateKeyStr) {
     throw new Error("Missing APTOS_PRIVATE_KEY environment variable");
   }
