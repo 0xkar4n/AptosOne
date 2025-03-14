@@ -80,7 +80,7 @@ const SidebarWallet = () => {
       toast.loading("Creating your AptosOne Wallet...");
       const response = await axios.post("/api/wallet", { userWalletAddress });
       const data = response.data;
-      if (response.status === 200 && data.success) {
+      if (data.success) {
         setCreatedWallet(data.wallet.aptosOneWalletAddress);
         toast.dismiss();
         toast.success("AptosOne Wallet created successfully!");

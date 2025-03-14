@@ -114,6 +114,11 @@ recommendation along with the expected but concise effective yield use high apy 
 export const POST = async(req:Request) => {
   try {
     const {steps,userWalletAddress,value}=await req.json()
+
+    return NextResponse.json({
+      success: true,
+      id: `strategy_${Math.random().toString(36).substring(2, 10)}`,
+  })
     
   } catch (error) {
     

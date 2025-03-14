@@ -1,97 +1,22 @@
-'use client';
-
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight, Sparkles, Zap, Code2, Cpu, Boxes } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import Navbar from "@/components/landing/navbar"
+import HeroSection from "@/components/landing/hero-section"
+import FlowSection from "@/components/landing/flow-section"
+import FeaturesSection from "@/components/landing/feature-section"
+import CtaSection from "@/components/landing/cta-section"
+import Footer from "@/components/landing/footer"
 
 export default function Home() {
-
-  const router = useRouter();
   return (
-    <main className="min-h-screen bg-gradient-to-b from-background to-background/95 relative overflow-hidden">
-      {/* Gradient Orbs */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/30 rounded-full blur-[128px] -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/30 rounded-full blur-[128px] translate-x-1/2 -translate-y-1/2" />
-      
-      {/* Grid Background */}
-      <div className="absolute inset-0" style={{
-        backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)',
-        backgroundSize: '40px 40px'
-      }} />
-
-      {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        {/* Hero Section */}
-        <div className="text-center space-y-8 py-20">
-          <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary/10 bg-primary/5 text-primary mb-8">
-            <Sparkles className="w-4 h-4 mr-2" />
-            <span>The Future of AI Development</span>
-          </div>
-          
-          <h1 className="text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 animate-gradient">
-            Build Intelligent Applications
-            <br />
-            With Cutting-Edge AI
-          </h1>
-          
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Create, deploy, and scale AI applications with our powerful platform.
-            Experience the next generation of development tools.
-          </p>
-
-          <div className="flex justify-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => router.push('/app/stake')}
-              className="px-8 py-4 bg-gradient-to-r from-purple-900/80 to-amber-900/80 backdrop-blur-sm text-white rounded-full text-lg font-medium tracking-wide transition-all duration-300 hover:from-purple-800 hover:to-amber-800 hover:shadow-lg hover:shadow-purple-900/20 relative z-10 group-hover:shadow-xl group-hover:shadow-purple-900/30"
-            >
-              Get Started
-            </motion.button>
-            {/* <Button  size="lg" variant="outline">
-              View Documentation
-            </Button> */}
-          </div>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 py-20">
-          <FeatureCard
-            icon={<Zap className="w-6 h-6" />}
-            title="Lightning Fast"
-            description="Build and deploy AI applications with unprecedented speed and efficiency."
-          />
-          <FeatureCard
-            icon={<Code2 className="w-6 h-6" />}
-            title="Intuitive Development"
-            description="Write clean, maintainable code with our modern development tools."
-          />
-          <FeatureCard
-            icon={<Cpu className="w-6 h-6" />}
-            title="Advanced AI Models"
-            description="Access state-of-the-art AI models and APIs with simple integration."
-          />
-          <FeatureCard
-            icon={<Boxes className="w-6 h-6" />}
-            title="Scalable Infrastructure"
-            description="Scale your applications seamlessly with our robust infrastructure."
-          />
-        </div>
-      </div>
-    </main>
-  );
+    <div className="min-h-screen bg-gradient-to-b from-black via-black to-purple-950/30 text-white">
+      <Navbar />
+      <main>
+        <HeroSection />
+        <FlowSection />
+        <FeaturesSection />
+        <CtaSection />
+      </main>
+      <Footer />
+    </div>
+  )
 }
 
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
-  return (
-    <Card className="p-6 bg-card/50 backdrop-blur-sm border-primary/10 hover:border-primary/20 transition-colors group">
-      <div className="rounded-lg p-3 bg-primary/5 w-fit group-hover:bg-primary/10 transition-colors">
-        {icon}
-      </div>
-      <h3 className="text-xl font-semibold mt-4 mb-2">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </Card>
-  );
-}

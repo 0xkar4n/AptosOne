@@ -11,6 +11,7 @@ import { motion } from "framer-motion"
 import { useAptBalance } from "@/custom/useAptBalance"
 import { SparklesText } from "./sparkles-text"
 import SidebarWallet from "../SidebarWallet"
+import { WalletSelector } from "../WalletSelector"
 
 interface Links {
   label: string
@@ -123,7 +124,7 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
         {/* Wallet Balance */}
         <div className="mt-auto pt-6">
 
-       <SidebarWallet />
+       <WalletSelector />
         </div>
       </div>
 
