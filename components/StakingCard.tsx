@@ -129,7 +129,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
                 </span>
                 :
                 <span className="ml-2 text-gray-500">               
-                0 APT
+                
                </span>
                 }
 

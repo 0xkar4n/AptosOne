@@ -55,10 +55,10 @@ export default function StrategyPage() {
     setRecommendations(null)
 
     try {
-      // Construct the API URL with query parameters
       const userWalletAddress = account?.address ? account.address.toString() : ""
       const url = `/api/ai-strategy?walletAddress=${encodeURIComponent(userWalletAddress)}&strategy=${encodeURIComponent(strategyQuery)}`
       const response = await axios.get(url)
+      console.log(response.data)
 
       const recs: Recommendation[] = response.data.finalResult.recommendations
       setRecommendations(recs)
@@ -285,7 +285,7 @@ export default function StrategyPage() {
                   <StrategyCard
                     title={`Strategy ${idx + 1}`}
                     description={rec.strategy}
-                    expected_effective_yield={rec.expected_effective_yield}
+                    expected_effective_yield={rec.effective_yield}
                     steps={rec.steps}
                     icon="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
                     investToken={investToken || "USDT"}

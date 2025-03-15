@@ -14,7 +14,7 @@ export default function AppLayout({
     <WalletProvider>
       <Sidebar>
         {children}
-        <Toaster richColors position="bottom-right" />
+        <Toaster richColors position="top-right" closeButton={true}  />
       </Sidebar>
       <Toaster />
       <ChatWidget />

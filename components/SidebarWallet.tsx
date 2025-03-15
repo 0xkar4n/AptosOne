@@ -39,9 +39,12 @@ const SidebarWallet = () => {
         try {
           debugger
           const response = await fetchAptosOneWallet(addr);
-        
-          if (response.success) {
-            setCreatedWallet(response.data.aptosOneWalletAddress);
+          if (typeof response === 'string') {
+            throw new Error(response); // Handle the error case
+          }
+
+          if (response) {
+            setCreatedWallet(response.aptosOneWalletAddress);
             // setCreatePrivateKey(response.data.encryptedPrivateKey);
             // setCreatePrivateKey(getPrivateKey.data.decryptedPrivateKey);
 
@@ -88,7 +91,7 @@ const SidebarWallet = () => {
 
   const handleCreateWallet = async () => {
     try {
-      debugger
+      
       if (!userWalletAddress) return;
       toast.loading("Creating your AptosOne Wallet...");
       const response = await axios.post("/api/wallet", { userWalletAddress });

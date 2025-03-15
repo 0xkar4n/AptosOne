@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { ArrowRight, ChevronRight } from "lucide-react"
 import { EnhancedSpotlight } from "../ui/enhanced-spotlight"
+import Link from "next/link"
 
 export default function HeroSection() {
   return (
@@ -50,13 +51,15 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
+            <Link href="/app/stake">
             <Button
               size="lg"
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg shadow-purple-900/30 group"
-            >
+              >
               Launch App
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
+                </Link>
             <Button
               size="lg"
               variant="outline"

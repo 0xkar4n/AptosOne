@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { toast } from "sonner"
 import axios from "axios"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
 export interface APYBreakdown {
   depositToken: string
@@ -51,6 +52,7 @@ const StrategyCard: React.FC<StrategyCardProps> = ({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)
+  const {account} = useWallet()
 
   const handleExecuteStrategy = async () => {
     // Validate input
@@ -70,9 +72,10 @@ const StrategyCard: React.FC<StrategyCardProps> = ({
     try {
       // Prepare data for API
       const data = {
+        userWalletAddress: account?.address.toString(),
         amount: Number(amount),
         steps: steps || [],
-        title,
+        description,
         investToken,
         netApy: netApy || 0,
         expected_effective_yield,
@@ -315,7 +318,9 @@ const StrategyCard: React.FC<StrategyCardProps> = ({
             <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
                   className="rounded-lg"
                   borderWidth={2} />
-              <Button className="w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-gray-100 font-medium py-6 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 h-auto">
+              <Button 
+              onClick={handleExecuteStrategy}
+              className="w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-gray-100 font-medium py-6 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 h-auto">
                 <span>Execute Strategy</span>
                 <ArrowRight size={16} />
               </Button>

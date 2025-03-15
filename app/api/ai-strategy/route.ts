@@ -94,6 +94,7 @@ recommendation along with the expected but concise effective yield use high apy 
       }
 
       const finalResult = JSON.parse(resultText.trim().slice(7).slice(0,-4));
+      console.log(finalResult)
   
       return NextResponse.json({ finalResult });
     }
@@ -113,15 +114,82 @@ recommendation along with the expected but concise effective yield use high apy 
 
 export const POST = async(req:Request) => {
   try {
-    const {steps,userWalletAddress,value}=await req.json()
+    const {userWalletAddress,amount,steps,description,investToken,netApy}=await req.json();
 
-    return NextResponse.json({
-      success: true,
-      id: `strategy_${Math.random().toString(36).substring(2, 10)}`,
-  })
+    if (!userWalletAddress || !amount || !steps || !investToken){
+      return NextResponse.json({error: "Invalid fields"})
+    }
+    console.log(steps,description,"amount",amount,investToken)
+
+    const agent =await llmAgent(userWalletAddress);
+    const prompt = `  
+      You are an expert blockchain automation agent with access to a meta-move-agent kit .
+      Your task is to execute the following investment strategy step-by-step using the tool provided.
+      
+      Strategy: "${description}"
+      
+      Amount: ${amount} ${investToken}
+
+      Steps:
+      ${steps}
+      
+      Instructions:
+      1. Execute each step sequentially. Do not proceed to the next step until the current step has been confirmed as successful and after 1st step decrease the amount=amount/2 for each next steps .
+      2. For each step, use the appropriate joule tool  to perform the transaction (e.g., call "lendToken" for lending or "borrowToken" for borrowing).
+      3. Check for success or failure after each transaction and include error handling.
+      4. Return the results as a JSON object containing a list of transaction statuses and details for each step.
+      
+      
+      Based on the above, execute all steps one by one using the provided tool.
+      `;;
+
+      const config = { configurable: { thread_id: "Execute_AI_Strategy" } };
+      
+      const stream = await agent.stream(
+        {
+          messages: [new HumanMessage(prompt)],
+        },
+        config
+      );
+
+      let resultText = "";
+      for await (const chunk of stream) {
+        if ("agent" in chunk) {
+          resultText += "Agent:"  + chunk.agent.messages[0].content + "\n";
+        } else if ("tools" in chunk) {
+          resultText += "Tool: " + chunk.tools.messages[0].content + "\n";
+        }
+      }
+
+      console.log(resultText)
+
+  
+      return NextResponse.json({ resultText });
+    }
     
-  } catch (error) {
+    catch(error: any){
+      console.error("Error in POST handler:", error);
+      return Response.json(
+        {
+          error: error.message,
+          code: error.error_code || error.vm_error_code || null,
+        },
+        { status: 500 }
+      );
+  }
+
+
+    
+    
+
+
+
+    
+
+  //   return NextResponse.json({
+  //     success: true,
+  //     id: `strategy_${Math.random().toString(36).substring(2, 10)}`,
+  // })
     
   }
 
-}

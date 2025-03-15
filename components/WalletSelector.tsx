@@ -63,8 +63,11 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
       const checkCreatedWallet = async () => {
         try {
           const response = await fetchAptosOneWallet(addr);
-              if (response.success) {
-            setCreatedWallet(response.data.aptosOneWalletAddress);
+          if (typeof response === 'string') {
+            throw new Error(response); // Handle the error case
+          }
+          if (response) {
+            setCreatedWallet(response.aptosOneWalletAddress);
           } else {
             setCreatedWallet(null);
           }
