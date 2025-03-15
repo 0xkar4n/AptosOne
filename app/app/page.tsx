@@ -7,7 +7,8 @@ import { ChatWidget } from "@/components/ChatWidget"
 export default function DashboardPage() {
   return (
     <div className="dark">
-      <StakingCards />
+      {/* <StakingCards /> */}
+      App page
     </div>
   )
 } 

@@ -23,7 +23,7 @@ import {
   LogOut,
   User,
 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import {
   Collapsible,
@@ -47,15 +47,17 @@ import { toast } from "sonner";
 import { BorderBeam } from "./ui/border-beam";
 import axios from "axios";
 import { fetchAptosOneWallet } from "@/utils/fetchAptosOneWallet";
-import { IconCopy } from "@tabler/icons-react";
+import { IconClipboard, IconCopy, IconDots, IconExternalLink } from "@tabler/icons-react";
 
 export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
   const { account, connected, disconnect, wallet } = useWallet();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [createdWallet, setCreatedWallet] = useState<string | null>(null);
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
-
+  const [showMenu, setShowMenu] = useState(false);
   const closeDialog = useCallback(() => setIsDialogOpen(false), []);
+  const menuRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (account?.address) {
       const addr = account.address.toString();
@@ -63,7 +65,7 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
       const checkCreatedWallet = async () => {
         try {
           const response = await fetchAptosOneWallet(addr);
-              if (response.success) {
+          if (response.success) {
             setCreatedWallet(response.data.aptosOneWalletAddress);
           } else {
             setCreatedWallet(null);
@@ -81,7 +83,9 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
     navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard!");
   };
-
+  const viewOnExplorer = (address: string) => {
+    window.open(`https://explorer.aptoslabs.com/account/${address}`, "_blank");
+  };
 
   const copyAddress = useCallback(async () => {
     if (!account?.address) return;
@@ -100,7 +104,7 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
       const response = await axios.post("/api/wallet", { userWalletAddress });
       const data = response.data;
       if (data.success) {
-        setCreatedWallet(data.wallet.aptosOneWalletAddress);
+        setCreatedWallet(data.createdRecord.aptosOneWalletAddress);
         toast.dismiss();
         toast.success("AptosOne Wallet created successfully!");
       } else {
@@ -117,100 +121,120 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
       {/* Background overlay */}
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-amber-500/10 opacity-30" />
       <h3 className="text-gray-300 text-sm mb-1 font-medium flex align-middle justify-center">Wallet</h3>
-    <DropdownMenu >
-      <DropdownMenuTrigger asChild >
-      <div className="flex items-center justify-between bg-neutral-700 p-3 rounded-lg">
-        <div className="flex justify-center align-middle text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
+      <DropdownMenu >
+        <DropdownMenuTrigger asChild >
+          <div className="flex items-center justify-between bg-neutral-700 p-3 rounded-lg">
+            <div className="flex justify-center align-middle text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
 
 
-        <Button className="flex justify-center align-middle text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
-          {account?.ansName ||
-            truncateAddress(account?.address?.toString()) ||
-            "Unknown"}
-        </Button>
-            </div>
-            </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onSelect={copyAddress} className="gap-2">
-          <Copy className="h-4 w-4" /> Copy address
-        </DropdownMenuItem>
-        {wallet && isAptosConnectWallet(wallet) && (
-          <DropdownMenuItem asChild>
-            <a
-              href={APTOS_CONNECT_ACCOUNT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex gap-2"
-            >
-              <User className="h-4 w-4" /> Account
-            </a>
-          </DropdownMenuItem>
-        )}
-        <DropdownMenuItem onSelect={disconnect} className="gap-2">
-          <LogOut className="h-4 w-4" /> Disconnect
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-    {createdWallet ? (
-            <div className="flex items-center mt-2 justify-between bg-neutral-700 p-3 rounded-lg">
-              <div>
-                <p className="text-xs text-gray-400">AptosOne Wallet</p>
-                <p className="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
-                  {truncateAddress(createdWallet)}
-                </p>
-              </div>
-              <button
-                onClick={() => copyToClipboard(createdWallet)}
-                className="hover:text-green-400"
-              >
-                <IconCopy size={20} />
-              </button>
-            </div>
-          ) : (
-            <div className="bg-neutral-700 p-3 rounded-lg">
-              <p className="text-gray-300 text-sm">
-                You haven't created an AptosOne Wallet yet.
-              </p>
-              <Button
-                onClick={handleCreateWallet}
-                className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full"
-              >
-                Create AptosOne Wallet
+              <Button className="flex justify-center align-middle text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
+                {account?.ansName ||
+                  truncateAddress(account?.address?.toString()) ||
+                  "Unknown"}
               </Button>
             </div>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onSelect={copyAddress} className="gap-2">
+            <Copy className="h-4 w-4" /> Copy address
+          </DropdownMenuItem>
+          {wallet && isAptosConnectWallet(wallet) && (
+            <DropdownMenuItem asChild>
+              <a
+                href={APTOS_CONNECT_ACCOUNT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex gap-2"
+              >
+                <User className="h-4 w-4" /> Account
+              </a>
+            </DropdownMenuItem>
           )}
+          <DropdownMenuItem onSelect={disconnect} className="gap-2">
+            <LogOut className="h-4 w-4" /> Disconnect
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {createdWallet ? (
+        <div className="flex items-center mt-2 justify-between bg-neutral-700 p-3 rounded-lg">
+          <div>
+            <p className="text-xs text-gray-400">AptosOne Wallet</p>
+            <p className="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
+              {truncateAddress(createdWallet)}
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* Three-dot button */}
+            <button onClick={() => setShowMenu(!showMenu)} className="hover:text-gray-400">
+              <IconDots size={20} />
+            </button>
+
+            {/* Dropdown menu positioned ABOVE the three dots */}
+            {showMenu && (
+              <div className="absolute right-0 bottom-full mb-2 w-40 bg-neutral-800 border border-gray-700 rounded-lg shadow-lg z-50">
+                <button
+                  className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
+                  onClick={() => copyToClipboard(createdWallet)}
+                >
+                  <IconClipboard size={16} className="mr-2" /> Copy Address
+                </button>
+
+                <button
+                  className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
+                  onClick={() => viewOnExplorer(createdWallet)}
+                >
+                  <IconExternalLink size={16} className="mr-2" /> View Explorer
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-neutral-700 p-3 rounded-lg">
+          <p className="text-gray-300 text-sm">
+            You haven't created an AptosOne Wallet yet.
+          </p>
+          <Button
+            onClick={handleCreateWallet}
+            className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full"
+          >
+            Create AptosOne Wallet
+          </Button>
+        </div>
+      )}
     </div>
   ) : (
     <div>
 
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-      <div className="bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-800 rounded-xl p-4 shadow-lg border border-gray-700/50 relative overflow-hidden">
-      {/* Background overlay */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-amber-500/10 opacity-30" />
-      <h3 className="text-gray-300 text-sm mb-1 font-medium flex align-middle justify-center">Wallet</h3>
-      <div className="relative overflow-hidden">
-        <Button className="bg-black text-white hover:bg-black/80 font-medium py-2 px-4 rounded-lg w-full">
-        Connect a Wallet
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger asChild>
+          <div className="bg-gradient-to-r from-neutral-800 via-neutral-700 to-neutral-800 rounded-xl p-4 shadow-lg border border-gray-700/50 relative overflow-hidden">
+            {/* Background overlay */}
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-amber-500/10 opacity-30" />
+            <h3 className="text-gray-300 text-sm mb-1 font-medium flex align-middle justify-center">Wallet</h3>
+            <div className="relative overflow-hidden">
+              <Button className="bg-black text-white hover:bg-black/80 font-medium py-2 px-4 rounded-lg w-full">
+                Connect a Wallet
 
-        <BorderBeam
-        size={50}
-        initialOffset={20}
-        className="from-transparent via-yellow-500 to-transparent"
-        transition={{
-          type: "spring",
-          stiffness: 60,
-          damping: 20,
-        }}/>
-        </Button>
-        </div>
-        </div>
-        
-      </DialogTrigger>
-      <ConnectWalletDialog close={closeDialog} {...walletSortingOptions} />
-    </Dialog>
-    
+                <BorderBeam
+                  size={50}
+                  initialOffset={20}
+                  className="from-transparent via-yellow-500 to-transparent"
+                  transition={{
+                    type: "spring",
+                    stiffness: 60,
+                    damping: 20,
+                  }} />
+              </Button>
+            </div>
+          </div>
+
+        </DialogTrigger>
+        <ConnectWalletDialog close={closeDialog} {...walletSortingOptions} />
+      </Dialog>
+
     </div>
   );
 }

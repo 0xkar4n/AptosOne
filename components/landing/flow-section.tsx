@@ -5,9 +5,10 @@ import { motion, useInView, useAnimation } from "framer-motion"
 import { User, Brain, Wallet, BarChart3, MessageCircle, Database } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+
 // Enhanced animated beam component
 const EnhancedBeam = ({
-  start,
+  start  ,
   end,
   color = "rgba(168, 85, 247, 0.8)", // Increased opacity from 0.6 to 0.8
   pulseColor = "rgba(236, 72, 153, 1)", // Increased opacity to 1 for full visibility
