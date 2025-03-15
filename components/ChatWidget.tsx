@@ -12,6 +12,8 @@ import axios from 'axios';
 import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { toast } from 'sonner';
 import { AnimatedBeam } from './ui/animated-beam';
+import { ShineBorder } from './ui/shine-border';
+import { BorderBeam } from './ui/border-beam';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -44,6 +46,12 @@ export function ChatWidget() {
         try {
 
             debugger
+            if(!connected) {
+                toast.error('Please connect your wallet to chat with the AI');
+                setIsLoading(false);
+                setMessages(messages.filter((_, index) => index !== messages.length));
+                return;
+            }
             const userWalletAddress = account?.address ? account.address.toString() : "";
             const response = await axios.post('/api/chat', { prompt: input, userWalletAddress: userWalletAddress });
             
@@ -86,22 +94,34 @@ export function ChatWidget() {
         }
     };
 
-    if(!connected) {
-        return null;
-    }
+
     return (
 
 
 
             <div className="fixed bottom-4 m-10 mb-8 right-4 z-50">
             {!isOpen ? (
+                <div className='relative rounded-full'>
+                
                 <Button
                     onClick={() => setIsOpen(true)}
                     size="lg"
-                    className="h-14 w-14 rounded-full shadow-lg hover:scale-105 transition-transform"
+                    className="h-14 w-14 rounded-full bg-slate-900 shadow-lg hover:scale-105 transition-transform hover:bg-slate-800"
                 >
-                    <Bot className="h-6 w-6" />
+                    <Bot className="h-6 w-6 text-white" />
                 </Button>
+                <BorderBeam
+              size={30}
+              initialOffset={20}
+              delay={0.001}
+              className="from-transparent via-yellow-500 to-transparent"
+              transition={{
+                type: "spring",
+                stiffness: 60,
+                damping: 20,
+              }}
+            />
+                </div>
             ) : (
                 <Card className={cn(
                     "w-[380px] h-[600px] flex flex-col",

@@ -7,7 +7,11 @@ import { ArrowRight, ChevronRight } from "lucide-react"
 import { EnhancedSpotlight } from "../ui/enhanced-spotlight"
 import Link from "next/link"
 
+import { useRouter } from "next/navigation"
+
+
 export default function HeroSection() {
+  const router = useRouter();
   return (
     <div className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-20">
       <EnhancedSpotlight />
@@ -51,21 +55,26 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Link href="/app/stake">
+
+            
             <Button
               size="lg"
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg shadow-purple-900/30 group"
-              >
+              onClick={() => router.push("/app/stake")}
+            >
               Launch App
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
-                </Link>
+
             <Button
               size="lg"
               variant="outline"
               className="border-purple-700/50 text-white hover:bg-purple-950/50 backdrop-blur-sm"
+              onClick={() => { window.open("https://github.com/0xkar4n/AptosOne", "_blank") }}
             >
-              Explore Docs
+              <a href="https://github.com/0xkar4n/AptosOne" target="_blank" rel="noopener noreferrer" />
+              {/* <Link  target="_blank" ></Link> */}
+              Explore Github
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
           </motion.div>

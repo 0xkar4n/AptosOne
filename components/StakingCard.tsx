@@ -38,6 +38,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
 
   const handleStake = async () => {
     try {
+      debugger;
       const amount = Number(stakeAmount);
       if (isNaN(amount) || amount <= 0) {
         toast.error("Please enter a valid stake amount");
