@@ -135,7 +135,7 @@ export function ChatWidget() {
                             </div>
                             <div>
                                 <h2 className="font-semibold">AI Assistant</h2>
-                                <p className="text-xs text-muted-foreground">Powered by Gemini</p>
+                                <p className="text-xs text-muted-foreground">Powered by Meta-Move-Agent kit</p>
                             </div>
                         </div>
                         <div className="flex items-center space-x-1">

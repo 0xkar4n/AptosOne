@@ -8,7 +8,6 @@ import { IconWallet, IconArrowsExchange, IconDroplet, IconMenu2, IconListDetails
 import { ShineBorder } from "@/components/ui/shine-border"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 import { motion } from "framer-motion"
-import { useAptBalance } from "@/custom/useAptBalance"
 import { SparklesText } from "./sparkles-text"
 import SidebarWallet from "../SidebarWallet"
 import { WalletSelector } from "../WalletSelector"
@@ -65,7 +64,6 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
 const SidebarContent = ({ children }: { children: React.ReactNode }) => {
   const [activeLink, setActiveLink] = useState<string>("/stake")
   const { open, setOpen } = useSidebar()
-  const { balance, loading } = useAptBalance();
 
   useEffect(() => {
     setActiveLink(window.location.pathname) // Set the active link based on the URL when the component mounts

@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { ArrowRight, ChevronRight } from "lucide-react"
 import { EnhancedSpotlight } from "../ui/enhanced-spotlight"
 import Link from "next/link"
+
 import { useRouter } from "next/navigation"
 
 
@@ -54,6 +55,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
+
             
             <Button
               size="lg"
@@ -63,7 +65,7 @@ export default function HeroSection() {
               Launch App
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
-           
+
             <Button
               size="lg"
               variant="outline"

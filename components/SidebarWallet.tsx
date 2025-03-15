@@ -35,8 +35,16 @@ const SidebarWallet = () => {
           setCheckingCreatedWallet(true);
           const response = await fetchAptosOneWallet(addr);
 
-          if (response.success) {
-            setCreatedWallet(response.data.aptosOneWalletAddress);
+          if (typeof response === 'string') {
+            throw new Error(response); // Handle the error case
+          }
+
+          if (response) {
+            setCreatedWallet(response.aptosOneWalletAddress);
+            // setCreatePrivateKey(response.data.encryptedPrivateKey);
+            // setCreatePrivateKey(getPrivateKey.data.decryptedPrivateKey);
+
+
           } else {
             setCreatedWallet(null);
           }
@@ -91,6 +99,31 @@ const SidebarWallet = () => {
       console.error("Failed to disconnect from wallet:", error);
     }
   };
+
+  const handleCreateWallet = async () => {
+    try {
+      
+      if (!userWalletAddress) return;
+      toast.loading("Creating your AptosOne Wallet...");
+      const response = await axios.post("/api/wallet", { userWalletAddress });
+      const data = response.data;
+
+      if (data.success) {
+        setCreatedWallet(data.wallet.aptosOneWalletAddress);
+
+        toast.dismiss();
+        toast.success("AptosOne Wallet created successfully!");
+      } else {
+        alert("Error creating wallet: " + data.error);
+        toast.dismiss();
+      }
+    } catch (error) {
+      console.error("Error creating wallet:", error);
+      alert("Error creating wallet");
+      toast.dismiss();
+    }
+  };
+
 
   const copyToClipboard = (text: string, message: string) => {
     navigator.clipboard.writeText(text);
