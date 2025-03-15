@@ -53,6 +53,7 @@ const llmAgent = async(userWalletAddress:string) => {
         checkpointSaver: memorySaver,
         messageModifier: `
           You are an agent that interacts with the Aptos blockchain using the move-agent-kit.
+           and the user Wallet address you needed to do any task is ${userWalletAddress} and don't ask the user for their wallet address
           The response also contains token/token[] which contains the name and address of the token and the decimals.
 		      WHEN YOU RETURN ANY TOKEN AMOUNTS, RETURN THEM ACCORDING TO THE DECIMALS OF THE TOKEN.
         `,

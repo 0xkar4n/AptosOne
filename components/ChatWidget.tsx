@@ -45,7 +45,6 @@ export function ChatWidget() {
 
         try {
 
-            debugger
             if(!connected) {
                 toast.error('Please connect your wallet to chat with the AI');
                 setIsLoading(false);
@@ -55,35 +54,46 @@ export function ChatWidget() {
             const userWalletAddress = account?.address ? account.address.toString() : "";
             const response = await axios.post('/api/chat', { prompt: input, userWalletAddress: userWalletAddress });
             
-            let replyText = "";
-            if (typeof response.data.result === "object") {
-                replyText = response.data.result.message || JSON.stringify(response.data.result);
-            } else {
-                replyText = response.data.result;
-            }
-            if(replyText.includes("Object")) {
-                const resArr: string[] = replyText.split(/[.,]/);
-                replyText = resArr[1];
-            }
-            let words = replyText.split(' ');
-            let typedMessage = '';
+            let replyText = response.data.result;
+            console.log(replyText)
 
-            setMessages((prev) => [...prev, { role: 'assistant', content: words[0]}]);
-            setIsLoading(false); // Hide loading dots as soon as AI starts responding
 
-            for (let i = 0; i < words.length; i++) {
-                await new Promise((resolve) => setTimeout(resolve, 50)); // Typing effect
-                typedMessage += (i === 0 ? '' : ' ') + words[i];
-            
-                setMessages((prev) =>
-                    prev.map((msg, index) =>
-                        index === prev.length - 1 ? { ...msg, content: typedMessage } : msg
-                    )
-                );
-            
-                // Auto-scroll
-                scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }
+if (typeof replyText === "string") {
+    // Extract the second "Agent:" message
+    const matches = replyText.match(/Agent:(.*?)(?=Agent:|$)/gs);
+        if (matches && matches.length > 1) {
+        replyText = matches[1].trim().slice(6) // Take the second "Agent:" message
+    }
+}
+
+console.log(replyText)
+
+//Format Markdown-like text into HTML (optional)
+replyText = replyText
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold text
+    .replace(/\*(.*?)\*/g, "<em>$1</em>") // Italic text
+    .replace(/\n/g, "<br>"); // Line breaks
+
+setMessages((prev) => [...prev, { role: 'assistant', content: replyText }]);
+setIsLoading(false);
+let typedMessage = '';
+const words = replyText.split(' '); // Split into words instead of characters
+
+for (let i = 0; i < words.length; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 50)); // Typing effect
+
+    typedMessage += (i === 0 ? '' : ' ') + words[i]; // Add words dynamically
+
+    setMessages((prev) =>
+        prev.map((msg, index) =>
+            index === prev.length - 1 ? { ...msg, content: typedMessage } : msg
+        )
+    );
+
+    // Auto-scroll
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+}
+
         } catch (error) {
             console.error('Error:', error);
             toast.error('Please add some funds to your wallet to chat with the AI');
@@ -174,37 +184,38 @@ export function ChatWidget() {
                             </div>
                         ) : (
                             <ScrollArea className="flex-1 p-4">
-                                <div className="space-y-4">
-                                    {messages.map((message, index) => (
-                                        <div
-                                            key={index}
-                                            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'
-                                                }`}
-                                        >
-                                            <div
-    className={`max-w-[80%] break-words rounded-lg p-3 ${
-        message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
-    }`
-    
-    }style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }} 
->
-                                                {message.content}
-                                            </div>
-                                        </div>
-                                    ))}
-                                    {isLoading && (
-                                        <div className="flex justify-start">
-                                            <div className="max-w-[80%] rounded-lg p-3 bg-muted">
-                                                <div className="flex space-x-2">
-                                                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
-                                                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.2s]" />
-                                                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.4s]" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </ScrollArea>
+    <div className="space-y-4">
+        {messages.map((message, index) => (
+            <div
+                key={index}
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'
+                    }`}
+            >
+                <div
+                    className={`max-w-[80%] break-words rounded-lg p-3 ${
+                        message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                    }`}
+                    style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
+                >
+                    {/* Render HTML content properly */}
+                    <div dangerouslySetInnerHTML={{ __html: message.content }} />
+                </div>
+            </div>
+        ))}
+        {isLoading && (
+            <div className="flex justify-start">
+                <div className="max-w-[80%] rounded-lg p-3 bg-muted">
+                    <div className="flex space-x-2">
+                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
+                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.2s]" />
+                        <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.4s]" />
+                    </div>
+                </div>
+            </div>
+        )}
+    </div>
+</ScrollArea>
+
                         )}
                     </ScrollArea>
 
@@ -223,7 +234,6 @@ export function ChatWidget() {
                 </Card>
             )}
         </div>
-        // </AnimatedBeam>
         
     );
 }

@@ -35,15 +35,9 @@ const SidebarWallet = () => {
           setCheckingCreatedWallet(true);
           const response = await fetchAptosOneWallet(addr);
 
-          if (typeof response === 'string') {
-            throw new Error(response); // Handle the error case
-          }
-
-          if (response) {
-            setCreatedWallet(response.aptosOneWalletAddress);
-            // setCreatePrivateKey(response.data.encryptedPrivateKey);
-            // setCreatePrivateKey(getPrivateKey.data.decryptedPrivateKey);
-
+         
+          if (response.success) {
+            setCreatedWallet(response.data.aptosOneWalletAddress);
 
           } else {
             setCreatedWallet(null);

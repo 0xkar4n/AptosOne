@@ -15,6 +15,10 @@ import { AgentRuntime, LocalSigner, createAptosTools } from "move-agent-kit";
 
 import { NextResponse } from "next/server";
 import { aptosAgent } from "@/utils/aptosAgent";
+import { JouleTopPoolsData } from "@/custom/top-pools";
+import { JouleTopBorrowPools } from "@/custom/joule-top-borrow-pool";
+import { JouleTopLendPools } from "@/custom/joule-top-lend-pool";
+import { JouleAIHighApyStrategy } from "@/custom/joule-ai-strategy";
 
 
 const llm = new ChatGoogleGenerativeAI({
@@ -31,18 +35,27 @@ export async function POST(req: Request) {
     
     const { prompt,userWalletAddress }=await req.json()
     console.log("req data in testing api ",prompt,userWalletAddress)
-      const {agent:agentRuntime,signer,account}= await aptosAgent(userWalletAddress)
-    console.log("Derived account",account);
-    const tools = createAptosTools(agentRuntime);
+      const {agent:agentRuntime}= await aptosAgent(userWalletAddress)
+
+    const defaultTools = createAptosTools(agentRuntime);
+    const tools = [...defaultTools, new JouleTopBorrowPools(agentRuntime),new JouleTopLendPools(agentRuntime),new JouleAIHighApyStrategy(agentRuntime)];
+
     const memorySaver = new MemorySaver();
     const agent = createReactAgent({
       llm,
       tools,
       checkpointSaver: memorySaver,
       messageModifier: `
-        You are an agent that interacts with the Aptos blockchain using the move-agent-kit.
-        The response also contains token/token[] which contains the name and address of the token and the decimals.
-        WHEN YOU RETURN ANY TOKEN AMOUNTS, RETURN THEM ACCORDING TO THE DECIMALS OF THE TOKEN.
+        You are a helpful agent that can interact onchain using the Aptos Agent Kit. You are
+        empowered to interact onchain using your tools. you can provide your wallet details and request funds from the user. If there is a 5XX
+        (internal) HTTP error code, ask the user to try again later. If someone asks you to do something you
+        can't do with your currently available tools, you must say so, and encourage them to implement it
+        themselves using the Aptos Agent Kit
+        show the apy till 2 digit 
+        User wallet address is ${userWalletAddress} if you needed 
+       
+		The response also contains token/token[] which contains the name and address of the token and the decimals.
+		WHEN YOU RETURN ANY TOKEN AMOUNTS, RETURN THEM ACCORDING TO THE DECIMALS OF THE TOKEN.
       `,
     });
 
@@ -60,11 +73,10 @@ export async function POST(req: Request) {
     let resultText = "";
     for await (const chunk of stream) {
       if ("agent" in chunk) {
-        resultText += "" + chunk.agent.messages[0].content + "\n";
-      } else if ("tools" in chunk) {
-        resultText += "Tool: " + chunk.tools.messages[0].content + "\n";
-      }
+        resultText += "Agent:" + chunk.agent.messages[0].content + "\n";
+      } 
     }
+    console.log(resultText)
 
     return NextResponse.json({ result: resultText });
   } catch (error: any) {

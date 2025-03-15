@@ -38,11 +38,8 @@ const WalletConnectDemo = () => {
         try {
           const response = await fetchAptosOneWallet(userWalletAddress.toString())
           console.log("incise use effect func",response)
-          if (typeof response === 'string') {
-            throw new Error(response); // Handle the error case
-          }
-          
-          if (response) {
+               
+          if (response.sucess) {
             console.log("Wallet is already created")
             console.log(response)
             setCreatedWallet(response.aptosOneWalletAddress);
