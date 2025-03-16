@@ -8,11 +8,10 @@ export class JouleAIHighApyStrategy extends Tool {
   description = `This tool analyzes lending and borrowing pools from Joule Finance and provides an optimal high APY strategy based on the user's wallet balance and strategy.
   
   **Input:**
-    - walletAddress (string): User's Aptos wallet address.
-    - strategy (string, optional): Strategy to analyze (e.g., "APT to USDT"). Default: "APT to USDT".
+    - strategy (string ): Strategy to analyze (e.g., "APT to USDT"). Default: "APT to USDT".
   
   **Output:**
-    - A JSON object with the best APY strategy for maximizing yield.
+    - The best APY strategy for maximizing yield.
   `;
 
   constructor(private agent: AgentRuntime) {
@@ -22,13 +21,7 @@ export class JouleAIHighApyStrategy extends Tool {
   protected async _call(input: string): Promise<string> {
     try {
       // Parse the input JSON string
-      const { walletAddress, strategy = "APT to USDT" } = JSON.parse(input);
-
-      if (!walletAddress) {
-        return JSON.stringify({ error: "Missing walletAddress parameter" });
-      }
-
-      console.log("Fetching strategy data for:", walletAddress, strategy);
+      const { strategy = "APT to USDT" } = JSON.parse(input);
 
       // Fetch Joule market data
       const response = await axios.get("https://price-api.joule.finance/api/market");
@@ -53,43 +46,26 @@ export class JouleAIHighApyStrategy extends Tool {
       console.log("Joule Pool Data:", poolsDict);
 
       // Create an AI Agent to analyze the best APY strategy
-      const agent = await llmAgent(walletAddress);
+      
       const prompt = `
-We have the following Joule pool data: ${JSON.stringify(poolsDict, null, 2)}. 
-Analyze this information to determine the optimal and highest APY strategy for maximizing yield when converting ${strategy}. 
-Consider:
-  - Direct lending
-  - Borrowing
-  - Multi-step lending & borrowing
-  - Token swaps
+We have the following Joule pool data: ${JSON.stringify(poolsDict, null, 2)}. Please analyze this information to determine the optimal and positive high apy strategy for 
+maximizing yield when converting ${strategy}. Consider all possible approaches such as direct lending, borrowing, multi-step lending and borrowing, 
+and token swaps. Use your internal reasoning to decide the best method that yields the highest APY for the ${strategy}, but only provide your final 3 
+recommendation along with the expected but concise effective yield use high apy for lending and low apy for borrowing with apy details of each step and calculation of the yeild in each step , without revealing any internal thought process and in JSON format.
+`;;
 
-Provide the **top 3 recommendations** with:
-  - APY details for each step
-  - Yield calculations for each step
-  - The final **effective yield**
-  
-Return the result **only** in structured JSON format.
-`;
+const getPromptRes = await axios.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GOOGLE_API_KEY}`,{  
+    "contents": [{
+      "parts":[{"text": prompt}]
+    }]
+});
 
-      const config = { configurable: { thread_id: "AI Strategy" } };
-      const stream = await agent.stream(
-        {
-          messages: [{ role: "user", content: prompt }],
-        },
-        config
-      );
 
-      let resultText = "";
-      for await (const chunk of stream) {
-        if ("agent" in chunk) {
-          resultText += chunk.agent.messages[0].content + "\n";
-        } else if ("tools" in chunk) {
-          resultText += "Tool: " + chunk.tools.messages[0].content + "\n";
-        }
-      }
+console.log("AI Response:", getPromptRes.data["candidates"][0]["content"]["parts"][0]["text"]);
 
-      const finalResult = JSON.parse(resultText.trim().slice(7).slice(0, -4));
-      console.log("Final APY Strategy:", finalResult);
+const finalResult = getPromptRes.data["candidates"][0]["content"]["parts"][0]["text"]
+       
+
 
       return JSON.stringify({ status: "success", strategy: finalResult });
     } catch (error: any) {

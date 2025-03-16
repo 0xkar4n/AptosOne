@@ -8,9 +8,9 @@ import { IconWallet, IconArrowsExchange, IconDroplet, IconMenu2, IconListDetails
 import { ShineBorder } from "@/components/ui/shine-border"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 import { motion } from "framer-motion"
-import { SparklesText } from "./sparkles-text"
 import SidebarWallet from "../SidebarWallet"
 import { WalletSelector } from "../WalletSelector"
+import Image from "next/image"
 
 interface Links {
   label: string
@@ -99,8 +99,10 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         {/* Logo */}
-        <SparklesText className="text-3xl flex justify-center  " text="AptosOne" />
-        <br  className="h-2 w-1/2 bg-white"/>
+        <div className=" rounded-lg">
+
+       <Image src="/testlogo.png" width={300} height={300} alt="AptosOne Logo" />
+        </div>
 
         {/* Navigation */}
         <div className="flex flex-col gap-y-3 mt-4">
