@@ -119,10 +119,10 @@ export default function FeaturesSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg shadow-purple-900/20">
+          {/* <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg shadow-purple-900/20">
             Explore All Features
             <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          </Button> */}
         </motion.div>
       </div>
     </section>
