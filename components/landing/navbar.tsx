@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -30,17 +31,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <div className="relative w-8 h-8">
-            <div className="absolute inset-0 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-lg transform rotate-45"></div>
-            <div className="absolute inset-1 bg-black rounded-lg transform rotate-45 flex items-center justify-center">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 font-bold">
-                A
-              </span>
-            </div>
-          </div>
-          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-            AptosOne
-          </span>
+          <Image src="/testlogo.png" width={300} height={300} alt="AptosOne Logo" />
         </Link>
 
         

@@ -15,7 +15,6 @@ import { AgentRuntime, LocalSigner, createAptosTools } from "move-agent-kit";
 
 import { NextResponse } from "next/server";
 import { aptosAgent } from "@/utils/aptosAgent";
-import { JouleTopPoolsData } from "@/custom/top-pools";
 import { JouleTopBorrowPools } from "@/custom/joule-top-borrow-pool";
 import { JouleTopLendPools } from "@/custom/joule-top-lend-pool";
 import { JouleAIHighApyStrategy } from "@/custom/joule-ai-strategy";
@@ -59,7 +58,7 @@ export async function POST(req: Request) {
       `,
     });
 
-    const config = { configurable: { thread_id: "Aptos Agent Kit!" } };
+    const config = { configurable: { thread_id: "Aptos Agent Kit!" ,  userWalletAddress: userWalletAddress} };
 
     // Stream a command to fetch the top lending and borrowing pools
     const stream = await agent.stream(

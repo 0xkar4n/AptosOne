@@ -8,6 +8,7 @@ import { EnhancedSpotlight } from "../ui/enhanced-spotlight"
 import Link from "next/link"
 
 import { useRouter } from "next/navigation"
+import FloatingLogos from "./floating-logos"
 
 
 export default function HeroSection() {
@@ -17,6 +18,8 @@ export default function HeroSection() {
       <EnhancedSpotlight />
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(120,50,255,0.15),transparent_50%)]"></div>
+
+      <FloatingLogos />
 
       <div className="container px-4 md:px-6 relative z-10 max-w-5xl mx-auto">
         <div className="text-center">

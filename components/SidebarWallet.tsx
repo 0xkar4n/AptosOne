@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { fetchAptosOneWallet } from "@/utils/fetchAptosOneWallet";
 import { IconCopy, IconLogout, IconDots, IconExternalLink, IconKey, IconClipboard } from "@tabler/icons-react";
-import { RainbowButton } from "@/components/magicui/rainbow-button";
+import { RainbowButton } from "@/components/ui/rainbow-button";
 import { Button } from "./ui/button";
 import { BorderBeam } from "./ui/border-beam";
 
