@@ -2,70 +2,132 @@
 
 import React, { useRef, useEffect, useState } from "react"
 import { motion, useInView, useAnimation } from "framer-motion"
-import { User, Brain, Wallet, BarChart3, MessageCircle, Database } from "lucide-react"
+import { User, Brain, Wallet, BarChart3, MessageCircle, Database, Network, Bot } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-
-// Enhanced animated beam component
+// Fixed EnhancedBeam component
 const EnhancedBeam = ({
-  start  ,
+  start,
   end,
-  color = "rgba(168, 85, 247, 0.8)", // Increased opacity from 0.6 to 0.8
-  pulseColor = "rgba(236, 72, 153, 1)", // Increased opacity to 1 for full visibility
+  color = "rgba(168, 85, 247, 0.8)",
+  pulseColor = "rgba(236, 72, 153, 1)",
   delay = 0,
+  curveDirection = "up", // "up" or "down"
 }) => {
-  const pathRef = useRef(null)
-  const [length, setLength] = useState(0)
+  const pathRef = useRef(null);
+  const [length, setLength] = useState(0);
+
+  // Calculate the curve for the path based on direction
+  const curve = {
+    x: (start.x + end.x) / 2,
+    y: curveDirection === "up" ? (start.y + end.y) / 2 - 50 : (start.y + end.y) / 2 + 50, // Adjust Y for direction
+  };
+
+  const pathData = `M ${start.x},${start.y} Q ${curve.x},${curve.y} ${end.x},${end.y}`;
 
   useEffect(() => {
     if (pathRef.current) {
-      setLength(pathRef.current.getTotalLength())
+      setLength(pathRef.current.getTotalLength());
     }
-  }, [start, end])
-
-  const curve = {
-    x: (start.x + end.x) / 2,
-    y: (start.y + end.y) / 2 - 50,
-  }
-
-  const pathData = `M ${start.x},${start.y} Q ${curve.x},${curve.y} ${end.x},${end.y}`
+  }, [start, end]);
 
   return (
     <>
+      {/* Base path */}
       <path
         ref={pathRef}
         d={pathData}
         fill="none"
         stroke={color}
-        strokeWidth="2.5" // Increased from 1.5 to 2.5
+        strokeWidth="2.5"
         strokeLinecap="round"
-        className="opacity-80" // Increased from 60 to 80
+        className="opacity-80"
       />
+
+      {/* First animated circle */}
       <motion.circle
-        cx="0"
-        cy="0"
-        r="5" // Increased from 3 to 5
+        r="5"
         fill={pulseColor}
-        filter="drop-shadow(0 0 12px rgba(236, 72, 153, 0.9))" // Enhanced glow effect
-        initial={{ offsetDistance: "0%" }}
+        initial={{ pathOffset: 0 }}
         animate={{
-          offsetDistance: ["0%", "100%"],
-          scale: [0.8, 1.5, 0.8], // Increased scale for better visibility
-          opacity: [0.6, 1, 0.6], // Increased minimum opacity
+          pathOffset: 1,
+          scale: [0.8, 1.5, 0.8],
+          opacity: [0.6, 1, 0.6],
         }}
         transition={{
-          duration: 3,
-          ease: "easeInOut",
-          repeat: Number.POSITIVE_INFINITY,
-          delay: delay,
+          pathOffset: {
+            duration: 3,
+            ease: "linear",
+            repeat: Number.POSITIVE_INFINITY,
+            delay: delay,
+          },
+          scale: {
+            duration: 2,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          },
+          opacity: {
+            duration: 2,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          },
         }}
         style={{
-          offsetPath: `path('${pathData}')`,
+          pathLength: 1,
+          pathOffset: 0,
+          filter: "drop-shadow(0 0 12px rgba(236, 72, 153, 0.9))",
         }}
-      />
+      >
+        <animateMotion dur="3s" repeatCount="indefinite" path={pathData} rotate="auto" />
+      </motion.circle>
+
+      {/* Second animated circle (going in opposite direction) */}
+      <motion.circle
+        r="3"
+        fill={pulseColor}
+        initial={{ pathOffset: 1 }}
+        animate={{
+          pathOffset: 0,
+          scale: [0.6, 1.2, 0.6],
+          opacity: [0.4, 0.8, 0.4],
+        }}
+        transition={{
+          pathOffset: {
+            duration: 2.5,
+            ease: "linear",
+            repeat: Number.POSITIVE_INFINITY,
+            delay: delay + 1,
+          },
+          scale: {
+            duration: 1.5,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          },
+          opacity: {
+            duration: 1.5,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          },
+        }}
+        style={{
+          pathLength: 1,
+          pathOffset: 1,
+          filter: "drop-shadow(0 0 8px rgba(236, 72, 153, 0.7))",
+        }}
+      >
+        <animateMotion
+          dur="2.5s"
+          repeatCount="indefinite"
+          path={pathData}
+          rotate="auto"
+          keyPoints="1;0"
+          keyTimes="0;1"
+          calcMode="linear"
+        />
+      </motion.circle>
     </>
-  )
-}
+  );
+};
 
 // Enhanced node component
 const Node = React.forwardRef(
@@ -133,17 +195,17 @@ const Node = React.forwardRef(
 Node.displayName = "Node"
 
 export default function FlowSection() {
-  const containerRef = useRef(null)
-  const svgRef = useRef(null)
-  const inView = useInView(containerRef, { once: false, amount: 0.2 })
+  const containerRef = useRef(null);
+  const svgRef = useRef(null);
+  const inView = useInView(containerRef, { once: false, amount: 0.2 });
 
   // Node refs
-  const userRef = useRef({ x: 0, y: 0 })
-  const aiRef = useRef({ x: 0, y: 0 })
-  const stakingRef = useRef({ x: 0, y: 0 })
-  const strategyRef = useRef({ x: 0, y: 0 })
-  const poolsRef = useRef({ x: 0, y: 0 })
-  const chatbotRef = useRef({ x: 0, y: 0 })
+  const userRef = useRef(null);
+  const aiRef = useRef(null);
+  const stakingRef = useRef(null);
+  const strategyRef = useRef(null);
+  const poolsRef = useRef(null);
+  const chatbotRef = useRef(null);
 
   // Node positions
   const [nodePositions, setNodePositions] = useState({
@@ -153,23 +215,23 @@ export default function FlowSection() {
     strategy: { x: 0, y: 0 },
     pools: { x: 0, y: 0 },
     chatbot: { x: 0, y: 0 },
-  })
+  });
 
   // Update node positions
   useEffect(() => {
     const updatePositions = () => {
-      if (!svgRef.current) return
+      if (!svgRef.current) return;
 
-      const svgRect = svgRef.current.getBoundingClientRect()
+      const svgRect = svgRef.current.getBoundingClientRect();
 
       const getNodeCenter = (ref) => {
-        if (!ref.current) return { x: 0, y: 0 }
-        const rect = ref.current.getBoundingClientRect()
+        if (!ref.current) return { x: 0, y: 0 };
+        const rect = ref.current.getBoundingClientRect();
         return {
           x: rect.left + rect.width / 2 - svgRect.left,
           y: rect.top + rect.height / 2 - svgRect.top,
-        }
-      }
+        };
+      };
 
       setNodePositions({
         user: getNodeCenter(userRef),
@@ -178,20 +240,20 @@ export default function FlowSection() {
         strategy: getNodeCenter(strategyRef),
         pools: getNodeCenter(poolsRef),
         chatbot: getNodeCenter(chatbotRef),
-      })
-    }
+      });
+    };
 
-    updatePositions()
-    window.addEventListener("resize", updatePositions)
+    updatePositions();
+    window.addEventListener("resize", updatePositions);
 
     // Small delay to ensure DOM is fully rendered
-    const timeout = setTimeout(updatePositions, 100)
+    const timeout = setTimeout(updatePositions, 100);
 
     return () => {
-      window.removeEventListener("resize", updatePositions)
-      clearTimeout(timeout)
-    }
-  }, [inView])
+      window.removeEventListener("resize", updatePositions);
+      clearTimeout(timeout);
+    };
+  }, [inView]);
 
   return (
     <section id="how-it-works" className="py-24 relative overflow-hidden">
@@ -222,6 +284,7 @@ export default function FlowSection() {
             {inView &&
               Object.keys(nodePositions).every((key) => nodePositions[key].x !== 0 && nodePositions[key].y !== 0) && (
                 <>
+                  {/* Existing paths */}
                   <EnhancedBeam start={nodePositions.staking} end={nodePositions.ai} delay={0.2} />
                   <EnhancedBeam
                     start={nodePositions.strategy}
@@ -245,6 +308,16 @@ export default function FlowSection() {
                     pulseColor="rgba(139, 92, 246, 0.8)"
                     delay={1.4}
                   />
+
+                  {/* New mirrored path from User to AI Core (curving downwards) */}
+                  <EnhancedBeam
+                    start={nodePositions.user}
+                    end={nodePositions.ai}
+                    color="rgba(99, 102, 241, 0.6)" // Different color for visibility
+                    pulseColor="rgba(99, 102, 241, 0.8)" // Different pulse color
+                    delay={1.7}
+                    curveDirection="down" // Curve downwards
+                  />
                 </>
               )}
           </svg>
@@ -257,8 +330,8 @@ export default function FlowSection() {
             <div className="flex justify-center">
               <Node
                 ref={aiRef}
-                icon={<Brain className="h-10 w-10" />}
-                label="AI Core"
+                icon={<Bot className="h-10 w-10" />}
+                label="AptosOne"
                 color="pink"
                 size="lg"
                 delay={0.4}
@@ -270,7 +343,7 @@ export default function FlowSection() {
               <Node
                 ref={strategyRef}
                 icon={<BarChart3 className="h-6 w-6" />}
-                label="Strategy"
+                label="AI Strategy"
                 color="pink"
                 delay={0.8}
               />
@@ -306,6 +379,5 @@ export default function FlowSection() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
-
