@@ -48,6 +48,7 @@ import { BorderBeam } from "./ui/border-beam";
 import axios from "axios";
 import { fetchAptosOneWallet } from "@/utils/fetchAptosOneWallet";
 import { IconClipboard, IconCopy, IconDots, IconExternalLink } from "@tabler/icons-react";
+import { RainbowButton } from "./ui/rainbow-button";
 
 export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
   const { account, connected, disconnect, wallet } = useWallet();
@@ -56,6 +57,7 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
   const [userWalletAddress, setUserWalletAddress] = useState<string | null>(null);
   const [showMenu, setShowMenu] = useState(false);
   const closeDialog = useCallback(() => setIsDialogOpen(false), []);
+  const [loading, setLoading] = useState(true); // Add a loading state
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,9 +66,9 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
       setUserWalletAddress(addr);
       const checkCreatedWallet = async () => {
         try {
-        
+          setLoading(true);
           const response = await fetchAptosOneWallet(addr);
-          console.log("respone value in walletconnect usefe",response)
+          console.log("respone value in walletconnect usefe", response)
           if (response.success) {
             setCreatedWallet(response.data.aptosOneWalletAddress);
           } else {
@@ -76,8 +78,14 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
           console.error("Error fetching created wallet:", error);
           setCreatedWallet(null);
         }
+        finally{
+          setLoading(false);
+        }
       };
       checkCreatedWallet();
+    }
+    else{
+      setLoading(false);
     }
   }, [account?.address]);
 
@@ -158,54 +166,56 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {createdWallet ? (
-        <div className="flex items-center mt-2 justify-between bg-neutral-700 p-3 rounded-lg">
-          <div>
-            <p className="text-xs text-gray-400">AptosOne Wallet</p>
-            <p className="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
-              {truncateAddress(createdWallet)}
-            </p>
-          </div>
-
-          <div className="relative">
-            {/* Three-dot button */}
-            <button onClick={() => setShowMenu(!showMenu)} className="hover:text-gray-400">
-              <IconDots size={20} />
-            </button>
-
-            {/* Dropdown menu positioned ABOVE the three dots */}
-            {showMenu && (
-              <div className="absolute right-0 bottom-full mb-2 w-40 bg-neutral-800 border border-gray-700 rounded-lg shadow-lg z-50">
-                <button
-                  className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
-                  onClick={() => copyToClipboard(createdWallet)}
-                >
-                  <IconClipboard size={16} className="mr-2" /> Copy Address
-                </button>
-
-                <button
-                  className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
-                  onClick={() => viewOnExplorer(createdWallet)}
-                >
-                  <IconExternalLink size={16} className="mr-2" /> View Explorer
-                </button>
-              </div>
-            )}
-          </div>
+      {loading ? ( // Show loading state while the request is processing
+        <div className="bg-neutral-700 p-3 rounded-lg max-w-full box-border flex items-center justify-center m-5">
+           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
         </div>
-      ) : (
-        <div className="bg-neutral-700 p-3 rounded-lg">
-          <p className="text-gray-300 text-sm">
-            You haven't created an AptosOne Wallet yet.
-          </p>
-          <Button
-            onClick={handleCreateWallet}
-            className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full"
+      ) :
+      createdWallet ? (
+  <div className="flex items-center mt-2 justify-between bg-neutral-700 p-3 rounded-lg">
+    <div>
+      <p className="text-xs text-gray-400">AptosOne Wallet</p>
+      <p className="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-amber-200">
+        {truncateAddress(createdWallet)}
+      </p>
+    </div>
+
+    <div className="relative">
+      {/* Three-dot button */}
+      <button onClick={() => setShowMenu(!showMenu)} className="hover:text-gray-400">
+        <IconDots size={20} />
+      </button>
+
+      {/* Dropdown menu positioned ABOVE the three dots */}
+      {showMenu && (
+        <div className="absolute right-0 bottom-full mb-2 w-40 bg-neutral-800 border border-gray-700 rounded-lg shadow-lg z-50">
+          <button
+            className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
+            onClick={() => copyToClipboard(createdWallet)}
           >
-            Create AptosOne Wallet
-          </Button>
+            <IconClipboard size={16} className="mr-2" /> Copy Address
+          </button>
+
+          <button
+            className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
+            onClick={() => viewOnExplorer(createdWallet)}
+          >
+            <IconExternalLink size={16} className="mr-2" /> View Explorer
+          </button>
         </div>
       )}
+    </div>
+  </div>
+) : (
+  <div className="bg-neutral-700 p-3 rounded-lg max-w-full box-border">
+    <p className="text-gray-300 text-sm">
+      You haven't created an AptosOne Wallet yet.
+    </p>
+    <RainbowButton onClick={handleCreateWallet} className="w-full max-w-full">
+      <span className="text-white text-sm whitespace-nowrap">Create AptosOne Wallet</span>
+    </RainbowButton>
+  </div>
+)}
     </div>
   ) : (
     <div>
