@@ -16,7 +16,6 @@ export default function AppLayout({
         {children}
         <Toaster richColors position="top-right" closeButton={true}  />
       </Sidebar>
-      <Toaster />
       <ChatWidget />
     </WalletProvider>
   )
