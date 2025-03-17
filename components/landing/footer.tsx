@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Github, GithubIcon } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 
 export default function Footer() {
@@ -11,17 +12,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center justify-center text-center">
           <Link href="/" className="flex items-center gap-2 mb-6">
-            <div className="relative w-8 h-8">
-              <div className="absolute inset-0 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-lg transform rotate-45"></div>
-              <div className="absolute inset-1 bg-black rounded-lg transform rotate-45 flex items-center justify-center">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 font-bold">
-                  A
-                </span>
-              </div>
-            </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-              AptosOne
-            </span>
+            <Image src="/final.png" width={180} height={180} alt="AptosOne Logo" />
           </Link>
 
           <p className="text-zinc-400 mb-6 max-w-md">
@@ -55,9 +46,9 @@ export default function Footer() {
                 href="https://x.com/0xkar4n"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-purple-400 hover:text-purple-300"
+                className="text-pink-400 hover:text-pink-300"
               >
-                Karan Das
+                Karan 
               </Link>{" "}
               &{" "}
               <Link
@@ -66,7 +57,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="text-pink-400 hover:text-pink-300"
               >
-                Praniket Bodke
+                Praniket
               </Link>
             </p>
             <p className="text-zinc-600 text-sm">© 2025 AptosOne. All rights reserved.</p>

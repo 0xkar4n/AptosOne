@@ -22,7 +22,7 @@ export interface Step {
 
 export interface Recommendation {
   strategy: string
-  expected_effective_yield: string
+  effective_yield: string
   steps: Step[]
 }
 
@@ -89,8 +89,7 @@ export default function StrategyPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900/20 to-gray-800/10 z-0"></div>
         <div className="absolute inset-0 bg-[url('/placeholder.svg?height=500&width=1920')] bg-cover bg-center opacity-5 z-0"></div>
 
-        {/* Animated particles */}
-        <ParticleEffect />
+     
 
         <motion.div
           className="container mx-auto px-4 py-16 relative z-10"
@@ -382,36 +381,4 @@ const LoadingSpinner = () => {
   )
 }
 
-const ParticleEffect = () => {
-  return (
-    <div className="absolute inset-0">
-      {Array.from({ length: 20 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1 h-1 rounded-full bg-white/20"
-          initial={{
-            x: Math.random() * 100 + "%",
-            y: Math.random() * 100 + "%",
-            opacity: Math.random() * 0.5 + 0.3,
-            scale: Math.random() * 0.5 + 0.5,
-          }}
-          animate={{
-            y: [null, Math.random() * -20 - 10, null],
-            opacity: [null, Math.random() * 0.8 + 0.2, null],
-            scale: [null, Math.random() * 1 + 1, null],
-          }}
-          transition={{
-            duration: Math.random() * 3 + 2,
-            repeat: Number.POSITIVE_INFINITY,
-            repeatType: "reverse",
-          }}
-          style={{
-            width: `${Math.random() * 3 + 1}px`,
-            height: `${Math.random() * 3 + 1}px`,
-          }}
-        />
-      ))}
-    </div>
-  )
-}
 

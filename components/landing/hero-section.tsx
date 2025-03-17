@@ -25,7 +25,7 @@ export default function HeroSection() {
         <div className="text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Badge className="mb-6 py-1.5 px-4 bg-purple-600/20 text-purple-300 hover:bg-purple-600/30 border-purple-500/20 backdrop-blur-sm">
-              <span className="mr-1 text-purple-400">✦</span> Built with Meta-Move-Agent Kit
+              <span className="mr-1 text-purple-400">✦</span> Built with Move-Agent Kit
             </Badge>
           </motion.div>
 

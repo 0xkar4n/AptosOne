@@ -59,7 +59,7 @@ export default function FeaturesSection() {
       icon: <Wallet className="h-6 w-6 text-purple-400" />,
       title: "Staking Capabilities",
       description:
-        "Easily stake your Aptos tokens and earn rewards with our intuitive staking interface. Monitor your earnings in real-time and optimize your strategy.",
+        "Easily stake your Aptos tokens in Thala, Amnis, and Echo directly on our platform.",
     },
     {
       icon: <Brain className="h-6 w-6 text-pink-400" />,
@@ -71,13 +71,13 @@ export default function FeaturesSection() {
       icon: <Database className="h-6 w-6 text-purple-400" />,
       title: "Curated Top Pools",
       description:
-        "Access a carefully selected collection of the highest-performing liquidity pools on the Aptos blockchain. Save time with pre-vetted opportunities.",
+        "Access a carefully selected collection of the highest-performing liquidity pools on the Joule Finance. Save time with pre-vetted opportunities.",
     },
     {
       icon: <MessageCircle className="h-6 w-6 text-pink-400" />,
       title: "AI Chatbot Support",
       description:
-        "Get instant answers to your questions with our AI-powered chatbot. Navigate the Aptos ecosystem with confidence and receive 24/7 assistance.",
+        "Explore everything our platform has to offer using our exclusive tools and intuitive chatbot. Get instant answers to your questions with our AI-powered assistant, confidently navigate the Aptos ecosystem.",
     },
   ]
 

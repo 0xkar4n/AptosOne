@@ -145,7 +145,7 @@ for (let i = 0; i < words.length; i++) {
                             </div>
                             <div>
                                 <h2 className="font-semibold">AI Assistant</h2>
-                                <p className="text-xs text-muted-foreground">Powered by Meta-Move-Agent kit</p>
+                                <p className="text-xs text-muted-foreground">Powered by Move-Agent kit</p>
                             </div>
                         </div>
                         <div className="flex items-center space-x-1">

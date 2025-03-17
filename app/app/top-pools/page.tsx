@@ -95,7 +95,7 @@ export default function TopPoolsPage() {
   return (
     <div className="space-y-8 p-4">
       <section>
-        <h2 className="text-2xl font-bold">Top Lending Pools</h2>
+        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-300 tracking-tight">Top Lending Pools</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           {data.topLendPools.map((pool, index) => (
             <PoolCard
@@ -116,7 +116,7 @@ export default function TopPoolsPage() {
         </div>
       </section>
       <section>
-        <h2 className="text-2xl font-bold">Top Borrowing Pools</h2>
+        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-300 tracking-tight">Top Borrowing Pools</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           {data.topBorrowPools.map((pool, index) => (
             <PoolCard

@@ -28,7 +28,7 @@ export default function ReadMePage() {
           <h2 className="text-2xl font-semibold mb-2">Features</h2>
           <ul className="list-disc pl-5">
             <li>
-              <strong>Staking:</strong> Stake or unstake APT on Thala, Echo, and Amnis using the Meta-Move-Agent kit.
+              <strong>Staking:</strong> Stake or unstake APT on Thala, Echo, and Amnis using the Move-Agent kit.
             </li>
             <li>
               <strong>Top Pools:</strong> Access top lending and borrowing pools on Joule Finance and invest directly.
@@ -37,7 +37,7 @@ export default function ReadMePage() {
               <strong>AI-Strategy:</strong> Enter a prompt like "APT to USDT" and get the best 3 strategies for yield maximization, including direct lending/borrowing, multi-lending/borrowing, and swapping.
             </li>
             <li>
-              <strong>Position Management:</strong> View all positions on Joule Finance, cancel individual positions, or close all positions at once.
+              <strong>Position Management:</strong> View all positions on Joule Finance.
             </li>
           </ul>
         </CardContent>

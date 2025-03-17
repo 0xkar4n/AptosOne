@@ -209,7 +209,7 @@ export default function FloatingLogos() {
       </FloatingLogo> */}
 
 
-        <FloatingLogo position="center-top" offsetX={-250} offsetY={-10} size={50} duration={5.5} delay={1.1} amplitude={14}>
+        <FloatingLogo position="top-left" offsetX={80} offsetY={10} size={65} duration={5.5} delay={1.1} amplitude={14}>
         <div className="bg-blue-900/10 p-2 rounded-full backdrop-blur-sm border border-blue-500/20 overflow-hidden">
           <Image
             src="https://pbs.twimg.com/profile_images/1556801889282686976/tuHF27-8_400x400.jpg"
@@ -220,6 +220,19 @@ export default function FloatingLogos() {
           />
         </div>
         </FloatingLogo>
+
+        <FloatingLogo position="center-top" offsetX={50} offsetY={10} size={50} duration={5.5} delay={1.1} amplitude={14}>
+        <div className="bg-blue-900/10 p-2 rounded-full backdrop-blur-sm border border-blue-500/20 overflow-hidden">
+          <Image
+            src="https://pbs.twimg.com/profile_images/1842105305813172224/irrbOSBA_400x400.png"
+            alt="Aptos Logo"
+            width={55}
+            height={55}
+            className="rounded-full w-full h-full object-cover"
+          />
+        </div>
+        </FloatingLogo>
+     
      
     </div>
   )

@@ -68,7 +68,7 @@ type PoolData = {
 
       const prompt = `
 We have the following Joule pool data: ${JSON.stringify(poolsDict, null, 2)}. Please analyze this information to determine the optimal and positive high apy strategy for 
-maximizing yield when converting ${userStrategy}. Consider all possible approaches such as direct lending, borrowing, multi-step lending and borrowing, 
+maximizing yield when converting ${userStrategy} at the end user want the "to token" as the output token and "from token" as the input token. Consider all possible approaches such as direct lending, borrowing, multi-step lending and borrowing, 
 and token swaps. Use your internal reasoning to decide the best method that yields the highest APY for the ${userStrategy}, but only provide your final 3 
 recommendation along with the expected but concise effective yield use high apy for lending and low apy for borrowing with apy details of each step and calculation of the yeild in each step , without revealing any internal thought process and in JSON format.
 `;
