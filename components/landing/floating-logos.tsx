@@ -124,11 +124,17 @@ export default function FloatingLogos() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Discord Logo */}
-      {/* <FloatingLogo position="top-left" offsetX={20} offsetY={-30} size={50} delay={0.2} amplitude={12}>
+      <FloatingLogo position="bottom-left" offsetX={30} offsetY={-30} size={50} delay={0.2} amplitude={12}>
         <div className="bg-[#5865F2]/10 p-3 rounded-full backdrop-blur-sm border border-[#5865F2]/20">
-          <DiscordLogo className="w-full h-full text-[#5865F2]" />
+        <Image
+            src="https://pbs.twimg.com/profile_images/1795851438956204032/rLl5Y48q_400x400.jpg"
+            alt="MetaMove Logo"
+            width={60}
+            height={60}
+            className="rounded-full w-full h-full object-cover"
+          />
         </div>
-      </FloatingLogo> */}
+      </FloatingLogo>
 
       {/* MetaMove Logo */}
       <FloatingLogo position="top-right" offsetX={-20} offsetY={20} size={60} duration={6} delay={0.5} amplitude={18}>

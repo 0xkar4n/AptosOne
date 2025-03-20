@@ -220,8 +220,8 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
             </div>
           </div>
         ) : (
-          <div className="bg-neutral-700 p-3 rounded-lg max-w-full box-border">
-            <p className="text-gray-300 text-sm">
+          <div className="bg-neutral-700 p-1 rounded-lg max-w-full box-border m-2">
+            <p className="text-gray-300 text-sm ">
               You haven't created an AptosOne Wallet yet.
             </p>
             <RainbowButton onClick={handleCreateWallet} className="w-full max-w-full">

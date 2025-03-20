@@ -75,7 +75,7 @@ export default function TopPoolsPage() {
         console.log(response.data)
         setData(response.data);
       } catch (err: any) {
-        setError(err.message || "An error occurred");
+        setError("Something Went Wrong");
       } finally {
         setLoading(false);
       }

@@ -9,7 +9,8 @@ import { getTokenByTokenAddress } from "@/utils/get-pool-name-by-token-name";
 
 export default function WalletPositions() {
   const { account, connected } = useWallet();
-  const [positions, setPositions] = useState([]);
+  const [positions, setPositions] = useState<any[]>([]);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +22,7 @@ export default function WalletPositions() {
     try {
       const response = await axios.get(`/api/get-positions?walletAddress=${userWalletAddress}`);
       const data = response.data;
-      
+
       // Flatten the nested positions data into a flat array
       const allPositionsData = data.allPositionsData || [];
       const flattenedPositions: any[] = [];
@@ -77,20 +78,23 @@ export default function WalletPositions() {
     setLoading(false);
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (connected) {
       fetchPositions();
     }
   }, [account, connected]);
 
   return (
-    <div className="w-full mx-auto p-4 h-full bg-gradient-to-r from-gray-900/20 to-gray-800/10">
-      <Card>
-        <CardContent className="p-4 space-y-4 flex flex-row items-center">
+    <div className="w-full flex mx-auto p-4 h-full bg-gradient-to-r from-gray-900/20 to-gray-800/10">
+      <Card className="w-full">
+        <CardContent className="p-4 space-y-4 flex flex-row justify-between items-center">
           <Button onClick={fetchPositions} disabled={loading}>
             {loading ? "Loading..." : "Fetch Positions"}
           </Button>
           {error && <p className="text-red-500">{error}</p>}
+
+
+
         </CardContent>
       </Card>
 

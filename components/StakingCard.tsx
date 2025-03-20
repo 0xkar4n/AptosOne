@@ -50,7 +50,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       
       // Show loading toast
       toast.loading("Processing your stake request...");
-      
+      debugger
       const response = await axios.post("/api/v1/stake", payload);
       
       // Dismiss all toasts before showing success
@@ -64,7 +64,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       // Dismiss all toasts before showing error
       toast.dismiss();
       toast.error("Stake failed", {
-        description: err.response?.data?.error || err.message || "An error occurred while staking",
+        description:  "Something Went Wrong ",
       });
     } finally {
       setIsSubmitting(false);
@@ -88,7 +88,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
     } catch (err: any) {
       toast.dismiss();
       toast.error("UnStake failed", {
-        description: err.response?.data?.error || err.message || "An error occurred while staking",
+        description: "Something Went Wrong",
       });
       setIsSubmitting(false);
     }

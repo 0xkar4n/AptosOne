@@ -4,6 +4,7 @@ import FlowSection from "@/components/landing/flow-section"
 import FeaturesSection from "@/components/landing/feature-section"
 import CtaSection from "@/components/landing/cta-section"
 import Footer from "@/components/landing/footer"
+import RoadmapSection from "@/components/landing/roadmap"
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <HeroSection />
         <FlowSection />
         <FeaturesSection />
+        <RoadmapSection />
         <CtaSection />
       </main>
       <Footer />

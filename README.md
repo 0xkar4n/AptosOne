@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AptosOne Project
 
-## Getting Started
+## 🚀 Overview
+AptosOne is an advanced DeFi platform on the Aptos blockchain that allows users to:
+- 🔑 **Create & Manage Wallets**
+- 💰 **Stake & Unstake Tokens**
+- 📊 **Access Top Lending/Borrowing Pools**
+- 🤖 **Apply AI Strategies for Yield Optimization**
+- 🗨 **Chat with a Smart Chatbot for Guidance**
+- 🤖 **Use a Discord Bot for DeFi Operations**
 
-First, run the development server:
+---
 
-```bash
+## 🔗 Wallet Connection & Activation
+To get started, users must:
+1. **Connect** their Aptos wallet (e.g., Petra, Martian, etc.).
+2. Click on **"Create a New AptosOne Wallet"**.
+3. Fund their new wallet with **any amount of tokens**.
+4. Activation happens **automatically** upon receiving the first transaction.
+5. Once activated, users gain access to all platform features.
+
+---
+
+## ⚡ Features
+
+### ✅ **Staking & Unstaking**
+- Stake or unstake **APT tokens** on Thala, Echo, and Amnis.
+- Uses the **Move-Agent Kit** for smooth execution.
+
+### 📈 **Top Lending & Borrowing Pools**
+- Get **real-time access** to the best lending and borrowing pools on **Joule Finance**.
+- Directly **invest or borrow** with optimal rates.
+
+### 🧠 **AI-Powered Strategy Execution**
+- Enter a prompt like **"APT to USDT"**.
+- Get **top 3 strategies** for maximizing yield:
+  - ✅ Direct lending/borrowing
+  - 🔄 Multi-lending/borrowing strategies
+  - 🔀 Smart token swapping
+
+### 🤖 **Discord Bot Integration**
+- Our **Discord bot** leverages Move-Agent-Kit tools.
+- Users can **stake, get wallet balance, and more** just by messaging the bot.
+
+---
+
+## 🛠 **Tech Stack**
+- **Backend**: next js, move agent kit, aptos sdk
+- **Frontend**: next js, typescript, tailwind css, shadcn
+- **Database**: Postgresql
+- **Orm**: prisma
+
+---
+
+## 📜 **Installation & Setup**
+To run the project locally:
+
+```sh
+# Clone the repository
+git clone https://github.com/yourusername/aptosone.git
+cd aptosone
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🤝 **Contributing**
+We welcome contributions! Feel free to:
+- Fork the repo
+- Open an issue
+- Submit a pull request
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📞 **Contact & Support**
+- Twitter: [@AptosOne](https://twitter.com/0xAptosOne)
+- Discord: [Join our community](https://discord.gg/aptosone)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🏆 **License**
+This project is licensed under the **MIT License**.
