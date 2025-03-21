@@ -54,14 +54,17 @@ const PoolCard: React.FC<PoolCardProps> = ({
         tokenAddress,
         userWalletAddress,
       };
-
+      toast.loading("Loading your request...")
       const response = await axios.post("/api/v1/top-pools", payload);
+     toast.dismiss();
       toast.success(`Action succeeded: ${response.data.result}`);
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.error) {
-        toast.error(`Action failed: ${error.response.data.error}`);
+        toast.error("Something Went Wrong");
+        toast.dismiss();
       } else {
-        toast.error(`An unexpected error occurred: ${error.message}`);
+        toast.error(`An unexpected error occurred`);
+        toast.dismiss();
       }
     }
   };

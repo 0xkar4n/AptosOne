@@ -4,6 +4,7 @@ import React, { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import { Wallet, Brain, Database, MessageCircle, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { IconBrandDiscord } from "@tabler/icons-react"
 
 interface FeatureCardProps {
   icon: React.ReactNode;
@@ -78,7 +79,12 @@ export default function FeaturesSection() {
       title: "AI Chatbot Support",
       description:
         "Explore everything our platform has to offer using our exclusive tools and intuitive chatbot. Get instant answers to your questions with our AI-powered assistant, confidently navigate the Aptos ecosystem.",
-    },
+    },{
+      icon : <IconBrandDiscord />,
+      title: "Discord Bot",
+      description:
+      "Engage with our integrated Discord bot effortlessly. Execute operations with ease. Stay connected and manage transactions seamlessly within your community"
+    }
   ]
 
   return (
