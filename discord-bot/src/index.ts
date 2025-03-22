@@ -9,7 +9,6 @@ import { Aptos, AptosConfig, Ed25519PrivateKey, Network, PrivateKey, PrivateKeyV
 import { PrismaClient } from '@prisma/client';
 import crypto from 'crypto';
 
-// Initialize Prisma client
 const prisma = new PrismaClient();
 
 const client = new Client({
@@ -37,7 +36,6 @@ async function initializeAgent(walletAddress?: string, privateKey?: string) {
     const aptosConfig = new AptosConfig({ network: Network.MAINNET });
     const aptos = new Aptos(aptosConfig);
     
-    // Use the provided private key or fall back to env variable
     const privateKeyStr = privateKey ;
     if (!privateKeyStr) {
       throw new Error("Missing private key");
@@ -108,9 +106,7 @@ client.on(Events.MessageCreate, async (message: any) => {
     const userChatHistory = chatHistory.get(userId);
     const currentState = userState.get(userId);
     
-    // Handle state: Initial check if user exists in DB
     if (currentState === UserState.INITIAL) {
-      // Check if Discord user ID exists in the database
       const userWallet = await prisma.userWallet.findFirst({
         where: {
           discordUserId: userId
@@ -122,19 +118,15 @@ client.on(Events.MessageCreate, async (message: any) => {
         userState.set(userId, UserState.WAITING_FOR_WALLET);
         return;
       } else {
-        // User exists, process with authenticated user
         userState.set(userId, UserState.AUTHENTICATED);
         return processAuthenticatedMessage(message, userId, userWallet.walletAddress, userWallet.encryptedPrivateKey);
       }
     }
     
-    // Handle state: Waiting for wallet address
     if (currentState === UserState.WAITING_FOR_WALLET) {
       const potentialWalletAddress = message.content.trim();
       
-      // Basic validation for Aptos wallet address
       if (potentialWalletAddress.startsWith('0x') && potentialWalletAddress.length >= 40) {
-        // Check if wallet exists in DB
         const walletDetails = await prisma.userWallet.findUnique({
           where: {
             walletAddress: potentialWalletAddress
@@ -152,14 +144,11 @@ client.on(Events.MessageCreate, async (message: any) => {
             }
           });
           
-          // Set authentication state first
           userState.set(userId, UserState.AUTHENTICATED);
           
-          // First, acknowledge the wallet authentication
           await message.reply("Wallet authenticated! I'm now ready to assist you with your on-chain interactions.");
           
-          // Don't try to process the wallet address as a command
-          // Instead, just prompt the user for their first command
+         
           await message.reply("What would you like to do with your wallet? You can ask about your balance, send tokens, or interact with contracts.");
           
           return;
@@ -210,7 +199,6 @@ async function processAuthenticatedMessage(message: any, userId: string, walletA
     return;
   }
 
-  // You'll need to decrypt the private key here
   const privateKey = decryptPrivateKey(encryptedPrivateKey);
 
   // Initialize agent with the user's wallet information
@@ -238,23 +226,18 @@ async function processAuthenticatedMessage(message: any, userId: string, walletA
       return str.substring(pos + delimiter.length);
     }
     
-    // Extract content after the second occurrence of "Agent:"
     const messageToSend = getSubstringAfterNthOccurrence(resultText, "Agent:", 2).trim();
     
     if (messageToSend) {
-      // Send the extracted message
       await message.reply(messageToSend);
-      // Update the user's chat history with the agent's response
       userChatHistory.push(new HumanMessage(messageToSend));
     } else {
-      // If we can't extract the second occurrence, use the first occurrence instead
-      // This prevents the error when there's only one Agent response
+      
       const firstResponse = getSubstringAfterNthOccurrence(resultText, "Agent:", 1).trim();
       if (firstResponse) {
         await message.reply(firstResponse);
         userChatHistory.push(new HumanMessage(firstResponse));
       } else {
-        // Fallback response if no agent response is found
         console.error("No agent response found in resultText.");
         await message.reply("I'm ready to help with your Aptos wallet. What would you like to do?");
       }
