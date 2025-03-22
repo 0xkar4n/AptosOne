@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function DiscordBotSection() {
   const sectionRef = useRef(null)
@@ -21,12 +22,12 @@ export default function DiscordBotSection() {
     {
       icon: <Zap className="h-5 w-5" />,
       title: "Real-time Updates",
-      description: "Receive notifications about price changes, new pools, and important ecosystem events",
+      description: "Recieve realtime response and realtime token and pool data",
     },
     {
       icon: <Server className="h-5 w-5" />,
       title: "Direct Transactions",
-      description: "Stake, unstake, and manage your assets directly through Discord commands",
+      description: "Stake, unstake, Add Liquidity, Remove liquidity and manage your assets directly through Discord commands",
     },
     {
       icon: <Users className="h-5 w-5" />,
@@ -128,7 +129,9 @@ export default function DiscordBotSection() {
                 variant="outline"
                 className="border-[#5865F2]/50 text-[#5865F2] hover:bg-[#5865F2]/10 transition-all duration-300"
               >
+                <Link href="https://github.com/0xkar4n/AptosOne/tree/main/discord-bot">
                 View Documentation
+                </Link>
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </motion.div>

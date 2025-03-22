@@ -28,7 +28,7 @@ const roadmapData: RoadmapQuarter[] = [
       { title: "Joule Finance top lending and borrowing pools", status: "completed" },
       { title: "AI-Strategy Builder", status: "completed" },
       { title: "AI-Chat bot", status: "completed" },
-      { title: "Discord bot", status: "in-progress" },
+      { title: "Discord bot", status: "completed" },
     ],
   },
   {
@@ -39,17 +39,7 @@ const roadmapData: RoadmapQuarter[] = [
       { title: "AI-Price Prediction", status: "planned" },
       { title: "Managing of Pools on Joule Finance", status: "planned" },
       { title: "TG-Bot", status: "planned" },
-      { title: "Scale Backend", status: "planned" },
-    ],
-  },
-  {
-    title: "Q3",
-    items: [
-      { title: "Swap Aggregator", status: "planned" },
-      { title: "AI-Fund Manager", status: "planned" },
-      { title: "Managing of Liquidity Pools", status: "planned" },
-      { title: "Mint MOD on Thala", status: "planned" },
-      { title: "MultiSign AptosOne Wallet", status: "planned" },
+      { title: "Scaling Backend", status: "planned" },
     ],
   },
 ]

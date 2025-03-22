@@ -12,6 +12,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "discord.js": "^14.18.0"
+    "@aptos-labs/ts-sdk": "^1.36.0",
+    "@langchain/core": "^0.3.42",
+    "@langchain/google-genai": "^0.1.11",
+    "@langchain/langgraph": "^0.2.57",
+    "@prisma/client": "^6.5.0",
+    "discord.js": "^14.18.0",
+    "move-agent-kit": "^0.2.0"
   }
 }

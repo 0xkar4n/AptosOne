@@ -58,22 +58,16 @@ export default function FeaturesSection() {
   const features = [
     {
       icon: <Wallet className="h-6 w-6 text-purple-400" />,
-      title: "Staking Capabilities",
+      title: "Staking & Curated Top Pools",
       description:
-        "Easily stake your Aptos tokens in Thala, Amnis, and Echo directly on our platform.",
+        "Easily stake your Aptos tokens in Thala, Amnis, and Echo directly on our platform. Access a carefully selected collection of the highest-performing liquidity pools on the Joule Finance.",
     },
     {
       icon: <Brain className="h-6 w-6 text-pink-400" />,
       title: "AI-Powered Strategy",
       description:
         "Leverage advanced AI algorithms to analyze market trends and optimize your investment strategy. Get personalized recommendations based on your risk profile.",
-    },
-    {
-      icon: <Database className="h-6 w-6 text-purple-400" />,
-      title: "Curated Top Pools",
-      description:
-        "Access a carefully selected collection of the highest-performing liquidity pools on the Joule Finance. Save time with pre-vetted opportunities.",
-    },
+    },   
     {
       icon: <MessageCircle className="h-6 w-6 text-pink-400" />,
       title: "AI Chatbot Support",

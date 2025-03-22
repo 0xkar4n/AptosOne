@@ -18,8 +18,8 @@ A powerful Discord bot that enables users to interact with the Aptos blockchain 
 - 💹 **DeFi Lending & Borrowing**:  
   Access top lending and borrowing pools from Joule Finance, enabling smarter yield strategies and liquidity management.
 
-- 🤖 **AI-Strategy Builder**:  
-  Receive AI-suggested strategies based on your risk profile—covering lending, swapping, borrowing, and even multi-lending/borrowing—to optimize your financial decisions.
+- 🤖 **Swapping*:  
+  Swap any token using using Move agent kit
 
 ## Supported Operations
 
@@ -42,10 +42,6 @@ The AptosOne bot supports a wide range of blockchain operations on the Aptos net
 - Add and remove Liquidity
 - Swap any token
 
-### Exclusive Tools
-- Get any Aptos token price, volume and market data
-- Get top lending and Borrowing pools on Joule Finance
-- Ai-Strategy Builder: 
 
 ## Getting Started
 
