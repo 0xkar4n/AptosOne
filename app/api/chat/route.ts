@@ -15,9 +15,10 @@ import { AgentRuntime, LocalSigner, createAptosTools } from "move-agent-kit";
 
 import { NextResponse } from "next/server";
 import { aptosAgent } from "@/utils/aptosAgent";
-import { JouleTopBorrowPools } from "@/custom/joule-top-borrow-pool";
-import { JouleTopLendPools } from "@/custom/joule-top-lend-pool";
-import { JouleAIHighApyStrategy } from "@/custom/joule-ai-strategy";
+import { JouleTopBorrowPools } from "@/custom-tools/joule-top-borrow-pool";
+import { JouleTopLendPools } from "@/custom-tools/joule-top-lend-pool";
+import { JouleAIHighApyStrategy } from "@/custom-tools/joule-ai-strategy";
+import { TokenData } from "@/custom-tools/token-data";
 
 const llm = new ChatGoogleGenerativeAI({
   temperature: 0.7,
@@ -38,6 +39,8 @@ export async function POST(req: Request) {
       new JouleTopBorrowPools(agentRuntime),
       new JouleTopLendPools(agentRuntime),
       new JouleAIHighApyStrategy(agentRuntime),
+      new TokenData(agentRuntime)
+
     ];
 
     const config = {

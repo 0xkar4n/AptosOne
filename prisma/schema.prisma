@@ -13,11 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model UserWallet {
-  id                     String   @id @default(cuid())  
+  id                     String   @id @default(cuid())
   walletAddress          String   @unique
   aptosOneWalletAddress  String   @unique @db.VarChar(67)
   encryptedPrivateKey    String
+  discordUserId          String?  
   createdTime            DateTime @default(now())
 }

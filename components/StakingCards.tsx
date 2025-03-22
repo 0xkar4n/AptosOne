@@ -1,5 +1,5 @@
 'use client'
-import { useAptBalance } from "@/custom/useAptBalance";
+import { useAptBalance } from "@/utils/useAptBalance";
 import StakingCard from "./StakingCard";
 import Image from "next/image";
 

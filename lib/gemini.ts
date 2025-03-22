@@ -6,7 +6,6 @@ export async function generateResponse(userInput: string): Promise<string> {
     const {account}=useWallet()
 
     try {
-   debugger
      const userWalletAddress=account?.address.toString();
       const response = await axios.post(`/api/chat`, { prompt,userWalletAddress });
       console.log("response in testing frontend",response.data)
