@@ -31,7 +31,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/final.png" width={230} height={230} alt="AptosOne Logo" />
+          <Image src="/1500x500.png" width={230} height={230} alt="AptosOne Logo" />
         </Link>
 
         
