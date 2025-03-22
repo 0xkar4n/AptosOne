@@ -30,7 +30,6 @@ const llmAgent = async(userWalletAddress:string) => {
     const aptos = new Aptos(aptosConfig);
 
     const privateKeyStr = decryptKey(record.encryptedPrivateKey);
-    console.log(privateKeyStr)
     if (!privateKeyStr) {
       throw new Error("Missing APTOS_PRIVATE_KEY environment variable");
     }

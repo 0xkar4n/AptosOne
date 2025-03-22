@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 export default function decryptKey(encryptedText: string): string {
-  debugger
+  
     const algorithm = "aes-256-cbc";
     const encryptionPassword = process.env.ENCRYPTION_PASSWORD;
     if (!encryptionPassword) {
