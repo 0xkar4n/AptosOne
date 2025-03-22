@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center justify-center text-center">
           <Link href="/" className="flex items-center gap-2 mb-6">
-            <Image src="/final.png" width={180} height={180} alt="AptosOne Logo" />
+            <Image src="/1500x500.png" width={180} height={180} alt="AptosOne Logo" />
           </Link>
 
           <p className="text-zinc-400 mb-6 max-w-md">

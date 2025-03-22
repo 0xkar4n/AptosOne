@@ -96,7 +96,7 @@ for (let i = 0; i < words.length; i++) {
 
         } catch (error) {
             console.error('Error:', error);
-            toast.error('Please add some funds to your wallet to chat with the AI');
+            toast.error('Something Went Wrong');
             setMessages(messages.filter((_, index) => index !== messages.length));
             // console.log(messages);
         } finally {

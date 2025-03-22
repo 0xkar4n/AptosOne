@@ -11,6 +11,7 @@ import { motion } from "framer-motion"
 import SidebarWallet from "../SidebarWallet"
 import { WalletSelector } from "../WalletSelector"
 import Image from "next/image"
+import AptosOnelogo from "../AptosOnelogo"
 
 interface Links {
   label: string
@@ -101,7 +102,8 @@ const SidebarContent = ({ children }: { children: React.ReactNode }) => {
         {/* Logo */}
         <div className=" rounded-lg">
 
-       <Image src="/testlogo.png" width={300} height={300} alt="AptosOne Logo" />
+       {/* <Image src="/testlogo.png" width={300} height={300} alt="AptosOne Logo" /> */}
+       <AptosOnelogo />
         </div>
 
         {/* Navigation */}
