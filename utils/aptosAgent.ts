@@ -16,7 +16,7 @@ export async function aptosAgent(userWalletAddress: string) {
   if (!record) {
     throw new Error("No record found for the provided userWalletAddress");
   }
-  console.log("record in aptosagent",record)
+
 
 
   const privateKeyStr = decryptKey(record.encryptedPrivateKey);

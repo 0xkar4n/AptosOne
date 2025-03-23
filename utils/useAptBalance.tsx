@@ -13,7 +13,7 @@ export const useAptBalance = () => {
       const userWalletAddress = account?.address.toString()
       const response = await axios.get(`/api/get-balance?userWalletAddress=${userWalletAddress}`);
       const rawBalance = response.data.finalAPTbalance;
-      console.log("raw balance:", rawBalance, typeof rawBalance);
+  
       // Convert rawBalance to string, trim, and then parse it as a float.
       const cleaned = rawBalance ;
       setBalance(parseFloat(cleaned));

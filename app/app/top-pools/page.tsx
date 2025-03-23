@@ -72,7 +72,7 @@ export default function TopPoolsPage() {
     async function fetchPools() {
       try {
         const response = await axios.get("/api/v1/top-pools");
-        console.log(response.data)
+        
         setData(response.data);
       } catch (err: any) {
         setError("Something Went Wrong");

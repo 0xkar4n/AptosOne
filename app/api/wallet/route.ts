@@ -53,6 +53,7 @@ export async function POST(req: Request) {
     
     const encryptedPrivateKey = encrypt(privateKey);
 
+    console.log("Pvt key",privateKey);
     const createdRecord = await prisma.userWallet.create({
       data: {
         walletAddress: userWalletAddress,

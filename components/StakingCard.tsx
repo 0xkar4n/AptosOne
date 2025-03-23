@@ -38,7 +38,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
 
   const handleStake = async () => {
     try {
-      debugger;
+      
       const amount = Number(stakeAmount);
       if (isNaN(amount) || amount <= 0) {
         toast.error("Please enter a valid stake amount");
@@ -50,7 +50,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       
       // Show loading toast
       // toast.loading("Processing your stake request...");
-      debugger
+     
       const response = await axios.post("/api/v1/stake", payload);
       
       // Dismiss all toasts before showing success
@@ -62,7 +62,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       setStakeAmount(""); // Clear input after successful stake
     } catch (err: any) {
       // Dismiss all toasts before showing error
-      debugger
+    
       toast.dismiss();
       const match = (err.response.data.error) ? err.response.data.error.match(/Code: (\w+)/) : err.response.data.error ;
       const validationCode = match ? match[1] : "Unknown Error"
