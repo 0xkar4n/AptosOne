@@ -100,7 +100,18 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
   const viewOnExplorer = (address: string) => {
     window.open(`https://explorer.aptoslabs.com/account/${address}`, "_blank");
   };
-
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
+      }
+    }
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   const copyAddress = useCallback(async () => {
     if (!account?.address) return;
     try {
@@ -193,31 +204,30 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
               </p>
             </div>
 
-            <div className="relative">
-              {/* Three-dot button */}
-              <button onClick={() => setShowMenu(!showMenu)} className="hover:text-gray-400">
-                <IconDots size={20} />
-              </button>
+            <div className="relative" ref={menuRef}>
+  <button onClick={() => setShowMenu(!showMenu)} className="hover:text-gray-400">
+    <IconDots size={20} />
+  </button>
 
-              {/* Dropdown menu positioned ABOVE the three dots */}
-              {showMenu && (
-                <div className="absolute right-0 bottom-full mb-2 w-40 bg-neutral-800 border border-gray-700 rounded-lg shadow-lg z-50">
-                  <button
-                    className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
-                    onClick={() => copyToClipboard(createdWallet)}
-                  >
-                    <IconClipboard size={16} className="mr-2" /> Copy Address
-                  </button>
+  {showMenu && (
+    <div className="absolute right-0 bottom-full mb-2 w-40 bg-neutral-800 border border-gray-700 rounded-lg shadow-lg z-50">
+      <button
+        className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
+        onClick={() => copyToClipboard(createdWallet)}
+      >
+        <IconClipboard size={16} className="mr-2" /> Copy Address
+      </button>
 
-                  <button
-                    className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
-                    onClick={() => viewOnExplorer(createdWallet)}
-                  >
-                    <IconExternalLink size={16} className="mr-2" /> View Explorer
-                  </button>
-                </div>
-              )}
-            </div>
+      <button
+        className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
+        onClick={() => viewOnExplorer(createdWallet)}
+      >
+        <IconExternalLink size={16} className="mr-2" /> View Explorer
+      </button>
+    </div>
+  )}
+</div>
+
           </div>
         ) : (
           <div className="bg-neutral-700 p-1 rounded-lg max-w-full box-border m-2">
