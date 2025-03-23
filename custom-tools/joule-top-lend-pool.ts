@@ -16,21 +16,34 @@ export class JouleTopLendPools extends Tool {
       const pools = response.data.data;
 
       const topLendPools = pools
-        .slice()
-        .sort((a: any, b: any) => {
-          const aTotalApy = Number(a.depositApy) + (a.extraAPY?.depositAPY || 0) + (a.extraAPY?.stakingAPY || 0);
-          const bTotalApy = Number(b.depositApy) + (b.extraAPY?.depositAPY || 0) + (b.extraAPY?.stakingAPY || 0);
-          return bTotalApy - aTotalApy;
-        })
-        .slice(0, 3)
-        .map((pool: any) => ({
-          name: pool.asset.assetName,
-          depositApy: pool.depositApy,
-          extraDepositApy: pool.extraAPY?.depositAPY || null,
-          stakingAPY: pool.extraAPY?.stakingAPY || null,
-          totalApy: Number(pool.depositApy) + (pool.extraAPY?.depositAPY || 0) + (pool.extraAPY?.stakingAPY || 0),
-          ltv: pool.asset.ltv ? Number(pool.asset.ltv) : null,
-        }));
+      .slice()
+      .sort((a: any, b:any) => {
+        const aTotalApy =
+          Number(a.depositApy) +
+          Number(a.extraAPY?.depositAPY || 0) +
+          Number(a.extraAPY?.stakingAPY || 0);
+        const bTotalApy =
+          Number(b.depositApy) +
+          Number(b.extraAPY?.depositAPY || 0) +
+          Number(b.extraAPY?.stakingAPY || 0);
+        return bTotalApy - aTotalApy;
+      })
+      .slice(0, 3)
+      .map((pool:any) => ({
+        name: pool.asset.assetName,
+        depositApy: pool.depositApy,
+        extraDepositApy: pool.extraAPY?.depositAPY ?? null,
+        stakingAPY: pool.extraAPY?.stakingAPY ?? null,
+        totalApy:
+          Number(pool.depositApy) +
+          Number(pool.extraAPY?.depositAPY || 0) +
+          Number(pool.extraAPY?.stakingAPY || 0),
+        ltv: pool.asset.ltv ? Number(pool.asset.ltv) : null,
+      }));
+    
+        
+
+        console.log()
 
       return JSON.stringify({ status: "success", topLendPools });
     } catch (error: any) {

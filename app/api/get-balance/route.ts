@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { aptosAgent } from "@/utils/aptosAgent";
 
 export const GET = async (req: Request) => {
