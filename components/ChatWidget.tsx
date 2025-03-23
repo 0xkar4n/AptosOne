@@ -55,7 +55,7 @@ export function ChatWidget() {
             const response = await axios.post('/api/chat', { prompt: input, userWalletAddress: userWalletAddress });
             
             let replyText = response.data.result;
-            console.log(replyText)
+         
 
 
 if (typeof replyText === "string") {
@@ -66,7 +66,7 @@ if (typeof replyText === "string") {
     }
 }
 
-console.log(replyText)
+
 
 //Format Markdown-like text into HTML (optional)
 replyText = replyText
@@ -95,10 +95,11 @@ for (let i = 0; i < words.length; i++) {
 }
 
         } catch (error) {
+            
             console.error('Error:', error);
             toast.error('Something Went Wrong');
             setMessages(messages.filter((_, index) => index !== messages.length));
-            // console.log(messages);
+          
         } finally {
             setIsLoading(false);
         }

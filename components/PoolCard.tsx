@@ -55,17 +55,29 @@ const PoolCard: React.FC<PoolCardProps> = ({
         userWalletAddress,
       };
       toast.loading("Loading your request...")
+      debugger
+
       const response = await axios.post("/api/v1/top-pools", payload);
-     toast.dismiss();
+
+      toast.dismiss();
       toast.success(`Action succeeded: ${response.data.result}`);
-    } catch (error: any) {
-      if (error.response && error.response.data && error.response.data.error) {
-        toast.error("Something Went Wrong");
+      toast.dismiss();
+    } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.error) {
+        const match = (err.response.data.error) ? err.response.data.error.match(/Code: (\w+)/) : err.response.data.error;
+        const validationCode = match ? match[1] : "Unknown Error"
         toast.dismiss();
+        toast.error("Failed", {
+          description: validationCode,
+        });
       } else {
         toast.error(`An unexpected error occurred`);
         toast.dismiss();
       }
+      
+    }
+    finally{
+      toast.dismiss();
     }
   };
 
@@ -158,9 +170,9 @@ const PoolCard: React.FC<PoolCardProps> = ({
         <div className=" flex justify-center pt-2 text-sm">
           <h1>For more details, visit {" "}
             <LinkPreview url="https://www.joule.finance/" className="font-bold text-orange-500">
-            Joule Finance
+              Joule Finance
             </LinkPreview>
-        
+
           </h1>
         </div>
       </div>

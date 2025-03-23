@@ -60,7 +60,7 @@ export default function FeaturesSection() {
       icon: <Wallet className="h-6 w-6 text-purple-400" />,
       title: "Staking & Curated Top Pools",
       description:
-        "Easily stake your Aptos tokens in Thala, Amnis, and Echo directly on our platform. Access a carefully selected collection of the highest-performing liquidity pools on the Joule Finance.",
+        "Easily stake your Aptos tokens in Thala, Amnis, and Echo directly on our platform. Access a carefully selected collection of the highest-performing Lending and Borrowing pools on the Joule Finance.",
     },
     {
       icon: <Brain className="h-6 w-6 text-pink-400" />,

@@ -17,7 +17,6 @@ export default function Home() {
     try {
     const userWalletAddress=account?.address.toString()
       const response = await axios.post(`/api/testing`, { prompt,userWalletAddress });
-      console.log("response in testing frontend",response.data)
       setResult(response.data.result);
     } catch (error: any) {
       setResult(`Error: ${error.message}`);

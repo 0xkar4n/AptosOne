@@ -22,7 +22,7 @@ export default function DiscordBotSection() {
     {
       icon: <Zap className="h-5 w-5" />,
       title: "Real-time Updates",
-      description: "Recieve realtime response and realtime token and pool data",
+      description: "Recieve realtime response and transaction update",
     },
     {
       icon: <Server className="h-5 w-5" />,
@@ -55,13 +55,13 @@ export default function DiscordBotSection() {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               <div className="bg-[#5865F2]/20 p-2.5 rounded-lg mr-4 w-14 h-14 flex items-center justify-center shadow-inner shadow-[#5865F2]/10">
-              <Image
-            src="https://pbs.twimg.com/profile_images/1795851438956204032/rLl5Y48q_400x400.jpg"
-            alt="MetaMove Logo"
-            width={60}
-            height={60}
-            className="rounded-full w-full h-full object-cover"
-            />
+                <Image
+                  src="https://pbs.twimg.com/profile_images/1795851438956204032/rLl5Y48q_400x400.jpg"
+                  alt="MetaMove Logo"
+                  width={60}
+                  height={60}
+                  className="rounded-full w-full h-full object-cover"
+                />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#5865F2] to-[#7289DA]">
                 Discord Bot
@@ -121,16 +121,20 @@ export default function DiscordBotSection() {
             >
               <Button
                 className="bg-[#5865F2] hover:bg-[#4752C4] text-white shadow-md shadow-[#5865F2]/20 transition-all duration-300"
-              >
-                <Bot className="mr-2 h-4 w-4" />
-                Add to Discord
+
+              ><Bot className="mr-2 h-4 w-4" />
+                <Link href="https://discord.com/users/1351606328455335978">
+                  
+                  Add to Discord
+                </Link>
+
               </Button>
               <Button
                 variant="outline"
                 className="border-[#5865F2]/50 text-[#5865F2] hover:bg-[#5865F2]/10 transition-all duration-300"
               >
                 <Link href="https://github.com/0xkar4n/AptosOne/tree/main/discord-bot">
-                View Documentation
+                  View Documentation
                 </Link>
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
@@ -150,13 +154,13 @@ export default function DiscordBotSection() {
               <Card className="bg-[#36393F] border-[#202225] rounded-xl overflow-hidden shadow-2xl relative">
                 <div className="bg-[#202225] p-4 flex items-center">
                   <div className="w-8 h-8 rounded-full bg-[#5865F2] flex items-center justify-center mr-3">
-                  <Image
-            src="https://pbs.twimg.com/profile_images/1795851438956204032/rLl5Y48q_400x400.jpg"
-            alt="MetaMove Logo"
-            width={60}
-            height={60}
-            className="rounded-full w-full h-full object-cover"
-          />                  </div>
+                    <Image
+                      src="https://pbs.twimg.com/profile_images/1795851438956204032/rLl5Y48q_400x400.jpg"
+                      alt="MetaMove Logo"
+                      width={60}
+                      height={60}
+                      className="rounded-full w-full h-full object-cover"
+                    />                  </div>
                   <div>
                     <h3 className="font-medium text-white">AptosOne Bot</h3>
                     <div className="flex items-center">
@@ -232,7 +236,7 @@ export default function DiscordBotSection() {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                      <motion.div
+                    <motion.div
                       className="flex justify-end mb-4"
                       initial={{ opacity: 0, y: 10 }}
                       animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -243,7 +247,7 @@ export default function DiscordBotSection() {
                       </div>
                     </motion.div>
 
-                     <AnimatePresence>
+                    <AnimatePresence>
                       {isInView && (
                         <motion.div
                           className="flex mb-4"

@@ -28,20 +28,19 @@ const WalletConnectDemo = () => {
     wallet,
   } = useWallet();
 
-  const [createdWallet, setCreatedWallet] = useState< string| null>(null);
+  const [createdWallet, setCreatedWallet] = useState<string | null>(null);
 
 
   useEffect(() => {
     const checkCreatedWallet = async () => {
-      const userWalletAddress=account?.address.toString()
-      if(userWalletAddress){
+      const userWalletAddress = account?.address.toString()
+      if (userWalletAddress) {
         try {
           const response = await fetchAptosOneWallet(userWalletAddress.toString())
-          console.log("incise use effect func",response)
-               
+
+
           if (response.sucess) {
-            console.log("Wallet is already created")
-            console.log(response)
+
             setCreatedWallet(response.aptosOneWalletAddress);
           } else {
             setCreatedWallet(null);
@@ -50,19 +49,19 @@ const WalletConnectDemo = () => {
           console.error("Error fetching created wallet:", error);
           setCreatedWallet(null);
         }
-      
-    };
-  }
+
+      };
+    }
     checkCreatedWallet();
   }, [account?.address]);
 
   // Connect with a specific wallet name (e.g., "Petra")
   const onConnect = async (walletName: string) => {
-    console.log("Attempting to connect with:", walletName);
+
     try {
       await connect(walletName);
-      
-      console.log("Connected to wallet:", account);
+
+
       toast.success("Wallet Connected")
     } catch (error) {
       console.error("Failed to connect to wallet:", error);
@@ -73,7 +72,7 @@ const WalletConnectDemo = () => {
   const handleDisconnect = async () => {
     try {
       await disconnect();
-      console.log("Disconnected from wallet");
+
       toast.success("Wallet Disconnected")
     } catch (error) {
       console.error("Failed to disconnect from wallet:", error);
@@ -89,11 +88,11 @@ const WalletConnectDemo = () => {
       const data = await response.data;
       if (response.status === 200) {
         setCreatedWallet(data.wallet.aptosOneWalletAddress);
-        console.log("New wallet created:", data.wallet);
+
         toast.dismiss();
         toast.success("AptosOne Created successful!", {
-        description: `Here is you aptosOne Wallet Address at Wallet Tab`,
-      })
+          description: `Here is you aptosOne Wallet Address at Wallet Tab`,
+        })
       } else {
         alert("Error creating wallet: " + data.error);
       }

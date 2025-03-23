@@ -91,7 +91,7 @@ const StrategyCard: React.FC<StrategyCardProps> = ({
       })
 
       // Handle successful response
-      console.log("Strategy response:", response.data)
+
 
       // Here you could update UI with response data or redirect
       // For example: router.push(`/strategy/${response.data.id}`);

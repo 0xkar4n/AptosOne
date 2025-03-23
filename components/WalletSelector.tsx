@@ -72,7 +72,7 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
         try {
           setLoading(true);
           const response = await fetchAptosOneWallet(addr);
-          console.log("respone value in walletconnect usefe", response)
+        
           if (response.success) {
             setCreatedWallet(response.data.aptosOneWalletAddress);
           } else {
@@ -106,7 +106,7 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
         setShowMenu(false);
       }
     }
-  
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -128,15 +128,15 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
       toast.loading("Creating your AptosOne Wallet...");
       const response = await axios.post("/api/wallet", { userWalletAddress });
       const data = response.data;
-  
+
       if (data.success) {
         setCreatedWallet(data.createdRecord.aptosOneWalletAddress);
         const createdPrivateKey = data.privateKey;
-  
+
         // Open the modal with the private key
         setIsPrivateKeyModalOpen(true);
         setPrivateKey(createdPrivateKey);
-  
+
         toast.dismiss();
         toast.success("AptosOne Wallet created successfully!");
       } else {
@@ -205,46 +205,45 @@ export function WalletSelector(walletSortingOptions: WalletSortingOptions) {
             </div>
 
             <div className="relative" ref={menuRef}>
-  <button onClick={() => setShowMenu(!showMenu)} className="hover:text-gray-400">
-    <IconDots size={20} />
-  </button>
+              <button onClick={() => setShowMenu(!showMenu)} className="hover:text-gray-400">
+                <IconDots size={20} />
+              </button>
 
-  {showMenu && (
-    <div className="absolute right-0 bottom-full mb-2 w-40 bg-neutral-800 border border-gray-700 rounded-lg shadow-lg z-50">
-      <button
-        className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
-        onClick={() => copyToClipboard(createdWallet)}
-      >
-        <IconClipboard size={16} className="mr-2" /> Copy Address
-      </button>
+              {showMenu && (
+                <div className="absolute right-0 bottom-full mb-2 w-40 bg-neutral-800 border border-gray-700 rounded-lg shadow-lg z-50">
+                  <button
+                    className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
+                    onClick={() => copyToClipboard(createdWallet)}
+                  >
+                    <IconClipboard size={16} className="mr-2" /> Copy Address
+                  </button>
 
-      <button
-        className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
-        onClick={() => viewOnExplorer(createdWallet)}
-      >
-        <IconExternalLink size={16} className="mr-2" /> View Explorer
-      </button>
-    </div>
-  )}
-</div>
+                  <button
+                    className="flex items-center w-full px-4 py-2 text-sm text-gray-300 hover:bg-neutral-700"
+                    onClick={() => viewOnExplorer(createdWallet)}
+                  >
+                    <IconExternalLink size={16} className="mr-2" /> View Explorer
+                  </button>
+                </div>
+              )}
+            </div>
 
           </div>
         ) : (
-          <div className="bg-neutral-700 p-1 rounded-lg max-w-full box-border m-2">
-            <p className="text-gray-300 text-sm ">
+          <div className="bg-neutral-700 p-4 rounded-lg w-full flex flex-col justify-center items-center mt-2">
+            <p className="text-gray-300 text-sm text-center">
               You haven't created an AptosOne Wallet yet.
             </p>
-            <RainbowButton onClick={handleCreateWallet} className="w-full max-w-full">
+            <RainbowButton onClick={handleCreateWallet} className="w-full max-w-full mt-2">
               <span className="text-white text-sm whitespace-nowrap">Create AptosOne Wallet</span>
-              
             </RainbowButton>
           </div>
         )}
-        <MessageModal
-                privateKey={privateKey}
-                isOpen={isPrivateKeyModalOpen}
-                onOpenChange={setIsPrivateKeyModalOpen}
-              />
+      <MessageModal
+        privateKey={privateKey}
+        isOpen={isPrivateKeyModalOpen}
+        onOpenChange={setIsPrivateKeyModalOpen}
+      />
     </div>
   ) : (
     <div>

@@ -58,11 +58,9 @@ export default function StrategyPage() {
       const userWalletAddress = account?.address ? account.address.toString() : ""
       const url = `/api/ai-strategy?walletAddress=${encodeURIComponent(userWalletAddress)}&strategy=${encodeURIComponent(strategyQuery)}`
       const response = await axios.get(url)
-      console.log(response.data)
 
       const recs: Recommendation[] = response.data.finalResult.recommendations
       setRecommendations(recs)
-      console.log(recs)
     } catch (err: any) {
       setError(err.response?.data?.error || err.message || "An error occurred")
     }
