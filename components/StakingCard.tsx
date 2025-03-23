@@ -49,7 +49,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       const payload = { protocol, value: amount, userWalletAddress:account?.address.toString() };
       
       // Show loading toast
-      toast.loading("Processing your stake request...");
+      // toast.loading("Processing your stake request...");
       debugger
       const response = await axios.post("/api/v1/stake", payload);
       
@@ -62,12 +62,19 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       setStakeAmount(""); // Clear input after successful stake
     } catch (err: any) {
       // Dismiss all toasts before showing error
+      debugger
+      toast.dismiss();
+      const match = (err.response.data.error) ? err.response.data.error.match(/Code: (\w+)/) : err.response.data.error ;
+      const validationCode = match ? match[1] : "Unknown Error"
       toast.dismiss();
       toast.error("Stake failed", {
-        description:  "Something Went Wrong ",
+        description:  validationCode,
       });
+
     } finally {
+      toast.dismiss();
       setIsSubmitting(false);
+
     }
   };
   const handleUnstake = async () => {

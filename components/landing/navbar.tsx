@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import Logo from "../AptosOnelogo"
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -30,9 +31,10 @@ export default function Navbar() {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/1500x500.png" width={230} height={230} alt="AptosOne Logo" />
-        </Link>
+        {/* <Link href="/" className="flex items-center gap-2"> */}
+          {/* <Image src="/1500x500.png" width={230} height={230} alt="AptosOne Logo" /> */}
+          <Logo size="lg"/>
+        {/* </Link> */}
 
         
 

@@ -165,7 +165,7 @@ client.on(Events.MessageCreate, async (message: any) => {
           return;
         } else {
           // Wallet not found
-          await message.reply("I couldn't find this wallet in our system. Please visit our website at https://metamove.build to create a wallet first, then come back here.");
+          await message.reply("I couldn't find this wallet in our system. Please visit our website at https://aptosone.vercel.app/ to create a wallet first, then come back here.");
           return;
         }
       } else {

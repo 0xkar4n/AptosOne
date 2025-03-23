@@ -1,3 +1,5 @@
+# ![AptosOne Discord Bot](https://pbs.twimg.com/profile_banners/1901169280504524801/1742496467/1500x500)
+
 # AptosOne Project
 
 ## 🚀 Overview
@@ -45,10 +47,10 @@ To get started, users must:
 ---
 
 ## 🛠 **Tech Stack**
-- **Backend**: next js, move agent kit, aptos sdk
-- **Frontend**: next js, typescript, tailwind css, shadcn
-- **Database**: Postgresql
-- **Orm**: prisma
+- **Backend**: Next.js, Move-Agent Kit, Aptos SDK
+- **Frontend**: Next.js, TypeScript, Tailwind CSS, ShadCN
+- **Database**: PostgreSQL
+- **ORM**: Prisma
 
 ---
 
@@ -62,6 +64,14 @@ cd aptosone
 
 # Install dependencies
 npm install
+
+# Create a .env file and pass the environment variables
+DATABASE_URL=""
+ENCRYPTION_PASSWORD=""
+GOOGLE_API_KEY=""
+
+# Initialize Prisma client locally
+npx prisma generate
 
 # Start the development server
 npm run dev
@@ -79,7 +89,7 @@ We welcome contributions! Feel free to:
 
 ## 📞 **Contact & Support**
 - Twitter: [@AptosOne](https://twitter.com/0xAptosOne)
-- Discord: [Join our community](https://discord.gg/aptosone)
+- Discord: [Join our community](https://discord.com/users/1351606328455335978)
 
 ---
 
