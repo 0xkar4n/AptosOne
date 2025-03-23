@@ -8,6 +8,7 @@ import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { Aptos, AptosConfig, Ed25519PrivateKey, Network, PrivateKey, PrivateKeyVariants } from "@aptos-labs/ts-sdk";
 import { PrismaClient } from '@prisma/client';
 import crypto from 'crypto';
+import express, { Request, Response } from 'express';
 
 const prisma = new PrismaClient();
 
@@ -273,3 +274,16 @@ function decryptPrivateKey(encryptedPrivateKey: string): string {
 
 // Connect to Discord
 client.login(process.env.DISCORD_BOT_TOKEN);
+
+
+// Start dummy HTTP server to satisfy Render's port binding requirements for deployment.
+//If you want you can remove the below code, it is only used for deployment purpose
+const dummyApp = express();
+const PORT = process.env.PORT || 3000;
+dummyApp.get('/', (req: Request, res: Response): void => {
+  res.send("Bot is running!");
+});
+dummyApp.listen(PORT, () => console.log(`HTTP server listening on port ${PORT}`));
+
+
+
