@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
@@ -7,10 +7,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { getTokenByTokenAddress } from "@/utils/get-pool-name-by-token-name";
 
+// Define the Position interface
+interface Position {
+  id: string;
+  positionName: string;
+  asset: string;
+  amount: number;
+  type: "lend" | "borrow";
+}
+
 export default function WalletPositions() {
   const { account, connected } = useWallet();
-  const [positions, setPositions] = useState<any[]>([]);
-
+  const [positions, setPositions] = useState<Position[]>([]); // Explicitly define the type
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,7 +33,7 @@ export default function WalletPositions() {
 
       // Flatten the nested positions data into a flat array
       const allPositionsData = data.allPositionsData || [];
-      const flattenedPositions: any[] = [];
+      const flattenedPositions: Position[] = []; // Explicitly define the type
 
       allPositionsData.forEach((positionObj: any) => {
         const positionsMap = positionObj.positions_map;
@@ -46,7 +54,7 @@ export default function WalletPositions() {
                   positionName: position_name,
                   asset: lend.key,
                   amount: normalizedAmount,
-                  type: "lend"
+                  type: "lend",
                 });
               });
             }
@@ -62,7 +70,7 @@ export default function WalletPositions() {
                   positionName: position_name,
                   asset: borrow.key,
                   amount: normalizedAmount,
-                  type: "borrow"
+                  type: "borrow",
                 });
               });
             }
@@ -70,7 +78,6 @@ export default function WalletPositions() {
         }
       });
 
-      console.log(flattenedPositions);
       setPositions(flattenedPositions);
     } catch (err) {
       setError("Failed to fetch data. Please try again.");
@@ -85,16 +92,13 @@ export default function WalletPositions() {
   }, [account, connected]);
 
   return (
-    <div className="w-full flex mx-auto p-4 h-full bg-gradient-to-r from-gray-900/20 to-gray-800/10">
-      <Card className="w-full">
-        <CardContent className="p-4 space-y-4 flex flex-row justify-between items-center">
+    <div className="w-full mx-auto p-4 h-full bg-gradient-to-r from-gray-900/20 to-gray-800/10">
+      <Card>
+        <CardContent className="p-4 space-y-4 flex flex-row items-center">
           <Button onClick={fetchPositions} disabled={loading}>
             {loading ? "Loading..." : "Fetch Positions"}
           </Button>
           {error && <p className="text-red-500">{error}</p>}
-
-
-
         </CardContent>
       </Card>
 
