@@ -11,6 +11,8 @@ import { JouleTopBorrowPools } from "@/custom-tools/joule-top-borrow-pool";
 import { JouleTopLendPools } from "@/custom-tools/joule-top-lend-pool";
 import { JouleAIHighApyStrategy } from "@/custom-tools/joule-ai-strategy";
 import { TokenData } from "@/custom-tools/token-data";
+import { TopNfts } from "@/custom-tools/top-nfts";
+
 
 const llm = new ChatGoogleGenerativeAI({
   temperature: 0.7,
@@ -31,7 +33,8 @@ export async function POST(req: Request) {
       new JouleTopBorrowPools(agentRuntime),
       new JouleTopLendPools(agentRuntime),
       new JouleAIHighApyStrategy(agentRuntime),
-      new TokenData(agentRuntime)
+      new TokenData(agentRuntime),
+      new TopNfts(agentRuntime)
 
     ];
 
