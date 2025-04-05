@@ -48,6 +48,10 @@ const PoolCard: React.FC<PoolCardProps> = ({
   const handleAgentAction = async () => {
     try {
       // Prepare payload based on the pool type
+      if(amount==''){
+        toast.error('Please enter valid amount');
+        return;
+      }
       const payload = {
         action: type === "Lending" ? "deposit" : "borrow",
         amount,
@@ -55,7 +59,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
         userWalletAddress,
       };
       toast.loading("Loading your request...")
-      debugger
+    
 
       const response = await axios.post("/api/v1/top-pools", payload);
 
@@ -63,21 +67,12 @@ const PoolCard: React.FC<PoolCardProps> = ({
       toast.success(`Action succeeded: ${response.data.result}`);
       toast.dismiss();
     } catch (err: any) {
-      if (err.response && err.response.data && err.response.data.error) {
-        const match = (err.response.data.error) ? err.response.data.error.match(/Code: (\w+)/) : err.response.data.error;
-        const validationCode = match ? match[1] : "Unknown Error"
         toast.dismiss();
         toast.error("Failed", {
-          description: validationCode,
+          description: err.response.data.error,
         });
-      } else {
-        toast.error(`An unexpected error occurred`);
-        toast.dismiss();
-      }
-      
-    }
+      } 
     finally{
-      toast.dismiss();
     }
   };
 

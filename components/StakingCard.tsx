@@ -38,7 +38,6 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
 
   const handleStake = async () => {
     try {
-      
       const amount = Number(stakeAmount);
       if (isNaN(amount) || amount <= 0) {
         toast.error("Please enter a valid stake amount");
@@ -64,11 +63,8 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       // Dismiss all toasts before showing error
     
       toast.dismiss();
-      const match = (err.response.data.error) ? err.response.data.error.match(/Code: (\w+)/) : err.response.data.error ;
-      const validationCode = match ? match[1] : "Unknown Error"
-      toast.dismiss();
       toast.error("Stake failed", {
-        description:  validationCode,
+        description:  err.response.data.error,
       });
 
     } finally {
@@ -95,7 +91,7 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
     } catch (err: any) {
       toast.dismiss();
       toast.error("UnStake failed", {
-        description: "Something Went Wrong",
+        description: err.response.data.error,
       });
       setIsSubmitting(false);
     }
