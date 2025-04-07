@@ -61,10 +61,16 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       setStakeAmount(""); // Clear input after successful stake
     } catch (err: any) {
       // Dismiss all toasts before showing error
-    
-      toast.dismiss();
+      let errorDescription = '';
+      const errorData = err?.response?.data
+      const errorJsonMatch = errorData.error.match(/{.*}/s);
+      if (errorJsonMatch) {
+        const parsed = JSON.parse(errorJsonMatch[0]);
+        const match = parsed.message?.match(/([A-Z_]+)$/);
+        errorDescription = match ? match[1] : parsed.error_code;
+      }
       toast.error("Stake failed", {
-        description:  err.response.data.error,
+        description:  errorDescription,
       });
 
     } finally {
@@ -89,11 +95,17 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
         description: `Successfully UnStaked ${amount} APT with ${protocol}`,
       });
     } catch (err: any) {
-      toast.dismiss();
-      toast.error("UnStake failed", {
-        description: err.response.data.error,
+      let errorDescription = '';
+      const errorData = err?.response?.data
+      const errorJsonMatch = errorData.error.match(/{.*}/s);
+      if (errorJsonMatch) {
+        const parsed = JSON.parse(errorJsonMatch[0]);
+        const match = parsed.message?.match(/([A-Z_]+)$/);
+        errorDescription = match ? match[1] : parsed.error_code;
+      }
+      toast.error("Stake failed", {
+        description:  errorDescription,
       });
-      setIsSubmitting(false);
     }
   };
 
