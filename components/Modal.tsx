@@ -53,9 +53,6 @@ export function MessageModal({ privateKey, isOpen, onOpenChange }: MessageModalP
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Your Private Key</DialogTitle>
-          <p className="text-sm text-gray-500">
-           Note : Please fund your wallet with any amount of token to activate in Aptos network.
-          </p>
         </DialogHeader>
         <div className="p-4 space-y-4">
           <div className="flex items-center gap-2">
@@ -68,6 +65,9 @@ export function MessageModal({ privateKey, isOpen, onOpenChange }: MessageModalP
           </div>
           <p className="text-sm text-gray-500">
             Please securely store your private key. Do not share it with anyone.
+          </p>
+          <p className="text-sm text-yellow-500">
+           Note : Please fund your wallet with any amount of token to activate in Aptos network.
           </p>
         </div>
       </DialogContent>
