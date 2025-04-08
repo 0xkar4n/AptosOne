@@ -78,7 +78,23 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ result: resultText });
   } catch (error: any) {
-    console.error("An error occurred:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error.message?.includes(`Can't derive account`)) {
+      return Response.json(
+        {
+          error: "Please fund your AptosOne wallet before proceeding",
+          code: "WALLET_FUNDING_REQUIRED",
+        },
+        { status: 400 }
+      );
+    }else{
+      return Response.json(
+        {
+          error: error.message,
+          code: error.error_code || error.vm_error_code || null,
+        },
+        { status: 500 }
+      );
+    
+    }
   }
 }

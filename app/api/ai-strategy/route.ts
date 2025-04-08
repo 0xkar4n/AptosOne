@@ -64,7 +64,7 @@ type PoolData = {
       console.log("pooldict created",poolsDict)
 
 
-      const agent =await llmAgent(userWalletAddress);
+      const agent  =await llmAgent(userWalletAddress);
 
       const prompt = `
 We have the following Joule pool data: ${JSON.stringify(poolsDict, null, 2)}. Please analyze this information to determine the optimal and positive high apy strategy for 
@@ -100,13 +100,24 @@ recommendation along with the expected but concise effective yield use high apy 
     }
     catch(error: any){
         console.error("Error in POST handler:", error);
-        return Response.json(
-          {
-            error: error.message,
-            code: error.error_code || error.vm_error_code || null,
-          },
-          { status: 500 }
-        );
+        if (error.message?.includes(`Can't derive account`)) {
+          return Response.json(
+            {
+              error: "Please fund your AptosOne wallet before proceeding",
+              code: "WALLET_FUNDING_REQUIRED",
+            },
+            { status: 400 }
+          );
+        }else{
+          return Response.json(
+            {
+              error: error.message,
+              code: error.error_code || error.vm_error_code || null,
+            },
+            { status: 500 }
+          );
+        
+        }
     }
   
 }
@@ -169,13 +180,24 @@ export const POST = async(req:Request) => {
     
     catch(error: any){
       console.error("Error in POST handler:", error);
-      return Response.json(
-        {
-          error: error.message,
-          code: error.error_code || error.vm_error_code || null,
-        },
-        { status: 500 }
-      );
+      if (error.message?.includes(`Can't derive account`)) {
+        return Response.json(
+          {
+            error: "Please fund your AptosOne wallet before proceeding",
+            code: "WALLET_FUNDING_REQUIRED",
+          },
+          { status: 400 }
+        );
+      }else{
+        return Response.json(
+          {
+            error: error.message,
+            code: error.error_code || error.vm_error_code || null,
+          },
+          { status: 500 }
+        );
+      
+      }
   }
 
 

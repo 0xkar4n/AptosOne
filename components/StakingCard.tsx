@@ -38,7 +38,6 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
 
   const handleStake = async () => {
     try {
-      
       const amount = Number(stakeAmount);
       if (isNaN(amount) || amount <= 0) {
         toast.error("Please enter a valid stake amount");
@@ -62,13 +61,16 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
       setStakeAmount(""); // Clear input after successful stake
     } catch (err: any) {
       // Dismiss all toasts before showing error
-    
-      toast.dismiss();
-      const match = (err.response.data.error) ? err.response.data.error.match(/Code: (\w+)/) : err.response.data.error ;
-      const validationCode = match ? match[1] : "Unknown Error"
-      toast.dismiss();
+      let errorDescription = '';
+      const errorData = err?.response?.data
+      const errorJsonMatch = errorData.error.match(/{.*}/s);
+      if (errorJsonMatch) {
+        const parsed = JSON.parse(errorJsonMatch[0]);
+        const match = parsed.message?.match(/([A-Z_]+)$/);
+        errorDescription = match ? match[1] : parsed.error_code;
+      }
       toast.error("Stake failed", {
-        description:  validationCode,
+        description:  errorDescription,
       });
 
     } finally {
@@ -93,11 +95,17 @@ const StakingCard = ({ icon, title, description, APTbalance, loading }: StakingC
         description: `Successfully UnStaked ${amount} APT with ${protocol}`,
       });
     } catch (err: any) {
-      toast.dismiss();
-      toast.error("UnStake failed", {
-        description: "Something Went Wrong",
+      let errorDescription = '';
+      const errorData = err?.response?.data
+      const errorJsonMatch = errorData.error.match(/{.*}/s);
+      if (errorJsonMatch) {
+        const parsed = JSON.parse(errorJsonMatch[0]);
+        const match = parsed.message?.match(/([A-Z_]+)$/);
+        errorDescription = match ? match[1] : parsed.error_code;
+      }
+      toast.error("Stake failed", {
+        description:  errorDescription,
       });
-      setIsSubmitting(false);
     }
   };
 
