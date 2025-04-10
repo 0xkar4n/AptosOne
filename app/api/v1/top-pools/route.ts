@@ -80,11 +80,11 @@ export async function GET() {
 
 export async function POST(req:Request) {
   try {
-    const { action, amount, tokenAddress, userWalletAddress } = await req.json();
+    const { action, amount, tokenAddress,title, userWalletAddress } = await req.json();
     const agent = await llmAgent(userWalletAddress);
     const config = { configurable: { thread_id: "Top-Pools" } };
   
-    const prompt = `please ${action} amount ${amount} to the address ${tokenAddress} on Joule if user dont have balance or fees send the error Message`;
+    const prompt = `please ${action} amount ${amount} to token ${title} having  address ${tokenAddress} on Joule having mint address as ${tokenAddress} creating a fresh position with whatever position id you would like you can create  and if user dont have balance or fees send the error Message`;
     const stream = await agent.stream(
       {
         messages: [new HumanMessage(prompt)],
