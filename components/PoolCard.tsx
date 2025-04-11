@@ -25,6 +25,7 @@ interface PoolCardProps {
   // Optionally pass these as props or get from context/state
   tokenAddress?: string;
   userWalletAddress?: string;
+  mintAddress?: string;
   ltv?: number; // new property: Loan-to-Value percentage
 }
 
@@ -39,6 +40,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
   borrowApy,
   tokenAddress,
   userWalletAddress,
+  mintAddress,
   ltv,
 }) => {
   // State to capture the amount input
@@ -48,7 +50,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
   const handleAgentAction = async () => {
     try {
       // Prepare payload based on the pool type
-      if(amount==''){
+      if (amount == '') {
         toast.error('Please enter valid amount');
         return;
       }
@@ -57,22 +59,34 @@ const PoolCard: React.FC<PoolCardProps> = ({
         amount,
         tokenAddress,
         userWalletAddress,
+        mintAddress,
+        title,
       };
-      toast.loading("Loading your request...")
-    
+      const loadingToastId = toast.loading("Loading your request...");
+
+      debugger
 
       const response = await axios.post("/api/v1/top-pools", payload);
 
-      toast.dismiss();
-      toast.success(`Action succeeded: ${response.data.result}`);
-      toast.dismiss();
+      toast.dismiss(loadingToastId);
+      if (response.data.result.toLowerCase().match("succeeded") || response.data.result.toLowerCase().match("successfully")) {
+        toast.success(`Action succeeded: ${response.data.result}`);
+      }
+      else{
+        const strMatch = response.data.result.match(/Validation Code:\s+([A-Z_]+)/);
+        const errorCode = strMatch ? strMatch[1] : "Transaction failed";
+        toast.error("Action Failed:",{
+          description: errorCode
+        })
+      }
     } catch (err: any) {
-        toast.dismiss();
-        toast.error("Failed", {
-          description: err.response.data.error,
-        });
-      } 
-    finally{
+      toast.dismiss();
+      toast.error("Failed", {
+        description: err.response.data.error,
+      });
+    }
+    finally {
+
     }
   };
 
