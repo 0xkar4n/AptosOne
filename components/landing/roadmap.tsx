@@ -38,8 +38,8 @@ const roadmapData: RoadmapQuarter[] = [
       { title: "Merkle Trade Integration", status: "planned" },
       { title: "AI-Price Prediction", status: "planned" },
       { title: "Managing of Pools on Joule Finance", status: "planned" },
-      { title: "TG-Bot", status: "planned" },
-      { title: "Scaling Backend", status: "planned" },
+      { title: "MultiSign AptosOne Wallet", status: "planned" },
+      { title: "Swap Aggregator", status: "planned" },
     ],
   },
 ]
