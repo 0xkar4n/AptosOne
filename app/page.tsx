@@ -6,6 +6,7 @@ import CtaSection from "@/components/landing/cta-section"
 import Footer from "@/components/landing/footer"
 import RoadmapSection from "@/components/landing/roadmap"
 import DiscordBotSection from "@/components/landing/discord-bot-section"
+import NftSection from "@/components/landing/nft-section"
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <FlowSection />
         <FeaturesSection />
         <DiscordBotSection />
+        <NftSection />
         <RoadmapSection />
         <CtaSection />
       </main>
